@@ -61,35 +61,32 @@ public class Carnet {
             this.carnetAdresse[i] = new Personne(carnetTemp[i]);
         }
     }
-    public void sauvegarde() throws IOException{
+    private void diminueTailleCarnet(){
+        int taille = this.tailleCarnet()-10;
         Personne[] carnetTemp= new Personne[nombrePersonne];
-        int taille = this.nombrePersonne-1;
-        System.out.println(taille);
-        for(int i=0;i <= taille ;i++){ //on copie pour avoir un tableau de la taille exact des donnée et donc ne pas avoir de null
+
+        for(int i=0; i < nombrePersonne ;i++){
             carnetTemp[i] = new Personne(this.carnetAdresse[i]);
         }
-        Gson gson = new Gson();
-        try {
-            String json = gson.toJson(carnetTemp);
-            FileWriter writer = new FileWriter("./save.json");
-            writer.write(json);
-            writer.close();
-            System.out.println("Sauvegarde Réussie");
-        } catch (IOException e) {
-            System.out.println("Erreur");
-            e.printStackTrace();
+        this.carnetAdresse = new Personne[taille]; // on récrée un tableau plus petit
+
+        for (int i=0;i < nombrePersonne ;i++){ // on remet les donnée qu'il y avait avant
+            this.carnetAdresse[i] = new Personne(carnetTemp[i]);
         }
     }
 
+    public void sauvegarde() throws IOException{
+
+    }
+
     public void chargement() throws IOException{
-        Gson gson = new Gson();
-        try {
-            this.carnetAdresse =  gson.fromJson(new FileReader("./save.json"),Personne[].class);
-            this.nombrePersonne = this.carnetAdresse.length;
-            System.out.println("Chargement Réussie");
-        } catch (IOException e) {
-            System.out.println("Erreur");
-            e.printStackTrace();
+
+    }
+    public void supprimer(int index){
+        this.carnetAdresse[index] = null;
+        this.nombrePersonne = this.nombrePersonne - 1;
+        if((this.carnetAdresse.length-this.nombrePersonne) >= 15 ){
+            this.diminueTailleCarnet();
         }
     }
 
