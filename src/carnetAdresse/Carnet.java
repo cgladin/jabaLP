@@ -96,6 +96,15 @@ public class Carnet {
         }
     }
 
+    public void tri(String critere){
+        int taille = this.carnetAdresse.length;
+
+        for(int i=0;i < taille;i++){
+            this.carnetAdresse[i].getCritere(critere).compareTo();
+        }
+
+    }
+
     public int getNombrePersonne(){
         return this.nombrePersonne;
     }
