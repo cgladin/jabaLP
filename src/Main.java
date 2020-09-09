@@ -12,21 +12,20 @@ public class Main {
         String adresse;
         String tel;
         Carnet carnet = new Carnet();
-
         do{
-            System.out.println("Saisir a pour ajouter une personne \nc pour voir le carnet \n" +
-                    "s pour sauvegarder \nd pour charger \nq pour quitter ");
-            saisie = sc.next();
+            System.out.println("\nSaisir \na pour ajouter une personne \nc pour voir le carnet \n" +
+                    "s pour sauvegarder \nl pour charger \nq pour quitter ");
+            saisie = sc.nextLine();
             switch (saisie){
                 case "a" :
                     System.out.println("Veuillez saisir le Prenom de la personne");
-                    prenom = sc.next();
+                    prenom = sc.nextLine();
                     System.out.println("Veuillez saisir le nom de la personne");
-                    nom = sc.next();
+                    nom = sc.nextLine();
                     System.out.println("Veuillez saisir l'adresse de la personne");
-                    adresse = sc.next();
+                    adresse = sc.nextLine();
                     System.out.println("Veuillez saisir le numéro de la personne");
-                    tel = sc.next();
+                    tel = sc.nextLine();
 
                     carnet.ajoutePersonne(nom,prenom,adresse,tel);
                     break ;
@@ -36,11 +35,14 @@ public class Main {
                 case "s":
                     carnet.sauvegarde();
                     break;
-                case "d":
+                case "l":
                     carnet.chargement();
                     break;
                 case "r":
-                    carnet.recherche();
+                    carnet.selectionRecherche();
+                    break;
+                case "d":
+                    carnet.selectionRecherche();
                     break;
                 case "q" :
                     System.out.println("exit");

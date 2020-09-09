@@ -23,6 +23,7 @@ public class Carnet {
             this.carnetAdresse[nombrePersonne]= new Personne(nom,prenom,adresse,tel);
             nombrePersonne = nombrePersonne + 1;
         }
+        System.out.println("Personne ajoutée \n");
     }
     private boolean verifEmplacementVide(){
         if (carnetAdresse.length != nombrePersonne) { //si le tableau n'est pas complet
@@ -96,7 +97,7 @@ public class Carnet {
             this.diminueTailleCarnet();
         }
     }
-    public void recherche(){
+    public void selectionRecherche(){
         Scanner sc = new Scanner(System.in);
         String saisie;
         String nom = "";
@@ -127,6 +128,7 @@ public class Carnet {
                     break;
             }
         }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom,prenom,adresse,telephone) != true);
+
 
     }
     public boolean verifRechercheSaisieNonVide(String nom,String prenom,String adresse,String telephone){
@@ -163,16 +165,29 @@ public class Carnet {
         return critereSaisie;
     }
 
-    public void tri(String critere){
+    public void rechercheSequentiel(){
+        this.triABulle();
+
+    }
+
+   public void triABulle(){
         int p = nombrePersonne - 1;
+        Personne buff;
         boolean exg = true;
         while (exg && p>0){
             exg=false;
-            for(int i = 0;i<p-1; i++){
-                /*if(this.carnetAdresse[i].getCritere(critere).compareTo(this.carnetAdresse[i]));*/
+            for(int i = 0; i<p-1; i++){
+                /*if(this.carnetAdresse[i].nom.compareTo(this.carnetAdresse[i+1].nom) > 0){
+                    buff = this.carnetAdresse[i];
+                    this.carnetAdresse[i]=this.carnetAdresse[i+1];
+                    this.carnetAdresse[i+1]=buff;
+                    exg=true;
+                }*/
             }
+            p = p-1;
         }
     }
+
     public void afficher(){
         for (int i = 0 ; i <= this.getNombrePersonne()-1; i++){
             this.carnetAdresse[i].afficherPersonne();
