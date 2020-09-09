@@ -31,15 +31,16 @@ public class Main {
                     carnet.ajoutePersonne(nom,prenom,adresse,tel);
                     break ;
                 case "c" :
-                    for (int i = 0 ; i <= carnet.getNombrePersonne()-1; i++){
-                        carnet.getPersonneFromCarnet(i).afficherPersonne();
-                    }
+                    carnet.afficher();
                     break;
                 case "s":
                     carnet.sauvegarde();
                     break;
                 case "d":
                     carnet.chargement();
+                    break;
+                case "r":
+                    carnet.recherche();
                     break;
                 case "q" :
                     System.out.println("exit");
