@@ -103,7 +103,6 @@ public class Carnet {
         String prenom ="";
         String adresse="";
         String telephone="";
-        int countCritere = 0;
 
         do{
             System.out.println("Quels sont les critères de recherche: " );
@@ -118,7 +117,7 @@ public class Carnet {
                     prenom = this.saisirRecherche("prenom",prenom);
                     break;
                 case "3":
-                   adresse = this.saisirRecherche("adresse",adresse);
+                    adresse = this.saisirRecherche("adresse",adresse);
                     break;
                 case "4":
                     telephone = this.saisirRecherche("telephone",telephone);
@@ -127,11 +126,11 @@ public class Carnet {
                     System.out.println("Erreur de saisie");
                     break;
             }
-        }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom,prenom,adresse,telephone));
+        }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom,prenom,adresse,telephone) != true);
 
     }
     public boolean verifRechercheSaisieNonVide(String nom,String prenom,String adresse,String telephone){
-        if(!nom.equals("") && !prenom.equals("") && !adresse.equals("") && !telephone.equals("")){
+        if(!nom.equals("") || !prenom.equals("") || !adresse.equals("") || !telephone.equals("")){
             return true;
         } else {
             return false;
