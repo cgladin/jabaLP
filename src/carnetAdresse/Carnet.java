@@ -82,12 +82,12 @@ public class Carnet {
     }
     public void supprimer(int index){
         this.carnetAdresse[index] = null;
-        this.nombrePersonne = this.nombrePersonne - 1;
         if(this.nombrePersonne != (index-1)){ //si on ne supprime pas la derniere case remplie
             int nbDeplacement = (nombrePersonne-index);
             for(int i=0;i<nbDeplacement;i++){ // on déplace les objets
                 this.carnetAdresse[i]=this.carnetAdresse[i+1];
             }
+            this.nombrePersonne = this.nombrePersonne - 1;
         }
         if((this.carnetAdresse.length-this.nombrePersonne) >= 15 ){ //on verifie qu'il y a au moins 15 place de libre pour avoir un nouveau tableau pas deja plein
             this.diminueTailleCarnet();
