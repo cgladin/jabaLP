@@ -34,11 +34,7 @@ public class Carnet {
                     return false;
                 }
             } else {
-                if(this.carnetAdresse[0] == null){
-                    return true;
-                } else {
-                    return false;
-                }
+                return (this.carnetAdresse[0] == null);
             }
         } else {
             return false;
@@ -110,33 +106,18 @@ public class Carnet {
             System.out.println("1: nom="+nom+", 2: prenom="+prenom+", 3: adresse="+adresse+", 4: Telephone="+telephone+", q: confirmé \n" );
             saisie = sc.next();
 
-            switch (saisie){
-                case "1":
-                    nom = this.saisirRecherche("nom",nom);
-                    break;
-                case "2":
-                    prenom = this.saisirRecherche("prenom",prenom);
-                    break;
-                case "3":
-                    adresse = this.saisirRecherche("adresse",adresse);
-                    break;
-                case "4":
-                    telephone = this.saisirRecherche("telephone",telephone);
-                    break;
-                default:
-                    System.out.println("Erreur de saisie");
-                    break;
+            switch (saisie) {
+                case "1" -> nom = this.saisirRecherche("nom", nom);
+                case "2" -> prenom = this.saisirRecherche("prenom", prenom);
+                case "3" -> adresse = this.saisirRecherche("adresse", adresse);
+                case "4" -> telephone = this.saisirRecherche("telephone", telephone);
+                default -> System.out.println("Erreur de saisie");
             }
-        }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom,prenom,adresse,telephone) != true);
-
-
+        }while(!saisie.equals("q") && !verifRechercheSaisieNonVide(nom, prenom, adresse, telephone));
+        this.trieABulle();
     }
     public boolean verifRechercheSaisieNonVide(String nom,String prenom,String adresse,String telephone){
-        if(!nom.equals("") || !prenom.equals("") || !adresse.equals("") || !telephone.equals("")){
-            return true;
-        } else {
-            return false;
-        }
+        return (!nom.equals("") || !prenom.equals("") || !adresse.equals("") || !telephone.equals(""));
 
     }
     public String saisirRecherche(String critere, String critereSaisie){
@@ -164,28 +145,44 @@ public class Carnet {
         }
         return critereSaisie;
     }
-
-    public void rechercheSequentiel(){
-        this.triABulle();
-
+    public void trieABulle(/*int n*/) {
+        //int p = n - 1;
+        int p = this.nombrePersonne - 1;
+        Personne x;
+        boolean tri = true;
+        while (tri & p > 0) {
+            tri = false;
+            for (int i = 0; i < p - 1; i++) {
+                if (this.carnetAdresse[i].comparaisonPersonne(this.carnetAdresse[i+1])) {
+                    x = this.carnetAdresse[i];
+                    this.carnetAdresse[i] = this.carnetAdresse[i + 1];
+                    this.carnetAdresse[i + 1] = x;
+                    tri = true;
+                }
+            }
+            p = p - 1;
+        }
     }
 
-   public void triABulle(){
-        int p = nombrePersonne - 1;
-        Personne buff;
-        boolean exg = true;
-        while (exg && p>0){
-            exg=false;
-            for(int i = 0; i<p-1; i++){
-                /*if(this.carnetAdresse[i].nom.compareTo(this.carnetAdresse[i+1].nom) > 0){
-                    buff = this.carnetAdresse[i];
-                    this.carnetAdresse[i]=this.carnetAdresse[i+1];
-                    this.carnetAdresse[i+1]=buff;
-                    exg=true;
-                }*/
+    public int RechercheDichotomique(String critere,String critereRechercher) {
+        int indice;
+        int a = 0;
+        int b = this.tailleCarnet() - 1;
+        int m = (a + b) / 2;
+        while (a < b && !this.carnetAdresse[m].getCritere(critere).equals(critereRechercher)) {
+            if (this.carnetAdresse[m].getCritere(critere).compareTo(critereRechercher) < 0) {
+                a = m + 1;
+            } else {
+                b = m - 1;
             }
-            p = p-1;
+            m = (a + b) / 2;
         }
+        if (this.carnetAdresse[m].getCritere(critere).equals(critereRechercher)) {
+            indice = m;
+        } else {
+            indice = -1;
+        }
+        return indice;
     }
 
     public void afficher(){
