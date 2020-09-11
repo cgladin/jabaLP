@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         String saisie;
         String nom;
@@ -13,11 +13,15 @@ public class Main {
         String tel;
         Carnet carnet = new Carnet();
         do{
-            System.out.println("\nSaisir \na pour ajouter une personne \nc pour voir le carnet \n" +
-                    "s pour sauvegarder \nl pour charger \nq pour quitter ");
+            System.out.println("\nSaisir\n " +
+                    "a pour ajouter une personne\n " +
+                    "c pour voir le carnet\n " +
+                    "s pour sauvegarder\n " +
+                    "l pour charger\n " +
+                    "q pour quitter");
             saisie = sc.nextLine();
-            switch (saisie){
-                case "a" :
+            switch (saisie) {
+                case "a" -> {
                     System.out.println("Veuillez saisir le Prenom de la personne");
                     prenom = sc.nextLine();
                     System.out.println("Veuillez saisir le nom de la personne");
@@ -26,30 +30,15 @@ public class Main {
                     adresse = sc.nextLine();
                     System.out.println("Veuillez saisir le numéro de la personne");
                     tel = sc.nextLine();
-
-                    carnet.ajoutePersonne(nom,prenom,adresse,tel);
-                    break ;
-                case "c" :
-                    carnet.afficher();
-                    break;
-                case "s":
-                    carnet.sauvegarde();
-                    break;
-                case "l":
-                    carnet.chargement();
-                    break;
-                case "r":
-                    carnet.selectionRecherche();
-                    break;
-                case "d":
-                    carnet.selectionRecherche();
-                    break;
-                case "q" :
-                    System.out.println("exit");
-                    break;
-                default:
-                    System.out.println("Erreur de saisie");
-                    break;
+                    carnet.ajoutePersonne(nom, prenom, adresse, tel);
+                }
+                case "c" -> carnet.afficher();
+                case "s" -> carnet.sauvegarde();
+                case "l" -> carnet.chargement();
+                case "r" -> carnet.selectionRecherche();
+                //case "d" -> carnet.selectionRecherche();
+                case "q" -> System.out.println("exit");
+                default -> System.out.println("Erreur de saisie");
             }
         }while(!saisie.equals("q"));
         sc.close();

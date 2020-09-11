@@ -1,12 +1,10 @@
 package carnetAdresse;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 
-public class Carnet {
+public class Carnet implements Serializable{
     private Personne[] carnetAdresse;
     private int nombrePersonne;
 
@@ -15,24 +13,17 @@ public class Carnet {
         nombrePersonne = 0;
     }
     public void ajoutePersonne(String nom, String prenom, String adresse, String tel){
-        if(this.verifEmplacementVide()){
-            this.carnetAdresse[nombrePersonne]= new Personne(nom,prenom,adresse,tel);
-            nombrePersonne = nombrePersonne + 1;
-        } else {
+        if (!this.verifEmplacementVide()) {
             this.augmenteTailleCarnet();
-            this.carnetAdresse[nombrePersonne]= new Personne(nom,prenom,adresse,tel);
-            nombrePersonne = nombrePersonne + 1;
         }
+        this.carnetAdresse[nombrePersonne]= new Personne(nom,prenom,adresse,tel);
+        nombrePersonne = nombrePersonne + 1;
         System.out.println("Personne ajoutée \n");
     }
     private boolean verifEmplacementVide(){
         if (carnetAdresse.length != nombrePersonne) { //si le tableau n'est pas complet
             if (nombrePersonne != 0){
-                if(this.carnetAdresse[nombrePersonne+1] == null){
-                    return true;
-                } else {
-                    return false;
-                }
+                return (this.carnetAdresse[nombrePersonne + 1] == null);
             } else {
                 return (this.carnetAdresse[0] == null);
             }
@@ -73,12 +64,36 @@ public class Carnet {
         }
     }
 
-    public void sauvegarde() throws IOException{
-
+    public void sauvegarde(){
+        ObjectOutputStream oos = null;
+        try{
+            final FileOutputStream fichier = new FileOutputStream("save.ser");
+            oos = new ObjectOutputStream(fichier);
+            oos.writeObject(this.carnetAdresse);
+            oos.flush();
+        } catch (final java.io.IOException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                if(oos != null){
+                    oos.flush();
+                    oos.close();
+                }
+            } catch (final java.io.IOException ex){
+                ex.printStackTrace();
+            }
+        }
     }
 
-    public void chargement() throws IOException{
-
+    public void chargement(){
+        ObjectInputStream ois = null;
+        try{
+            final FileInputStream fichier = new FileInputStream("save.ser");
+            ois = new ObjectInputStream(fichier);
+            //this.carnetAdresse = (this.carnetAdresse) ois.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public void supprimer(int index){
         this.carnetAdresse[index] = null;
