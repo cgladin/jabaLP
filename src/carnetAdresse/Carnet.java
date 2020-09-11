@@ -71,17 +71,9 @@ public class Carnet implements Serializable{
             oos = new ObjectOutputStream(fichier);
             oos.writeObject(this.carnetAdresse);
             oos.flush();
+            System.out.println("Carnet Sauvegardé");
         } catch (final java.io.IOException e){
             e.printStackTrace();
-        } finally {
-            try {
-                if(oos != null){
-                    oos.flush();
-                    oos.close();
-                }
-            } catch (final java.io.IOException ex){
-                ex.printStackTrace();
-            }
         }
     }
 
