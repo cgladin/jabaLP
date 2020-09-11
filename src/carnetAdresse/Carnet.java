@@ -9,7 +9,7 @@ public class Carnet implements Serializable{
     private int nombrePersonne;
 
     public Carnet(){
-        carnetAdresse = new Personne[1];
+        carnetAdresse = new Personne[10];
         nombrePersonne = 0;
     }
     public void ajoutePersonne(String nom, String prenom, String adresse, String tel){
@@ -49,6 +49,7 @@ public class Carnet implements Serializable{
         for (int i=0;i <= taille ;i++){ // on remet les donnée qu'il y avait avant
             this.carnetAdresse[i] = new Personne(carnetTemp[i]);
         }
+        System.out.println("Taille augmenté de 10, taille actuelle "+this.tailleCarnet()+" et "+this.nombrePersonne+" presente");
     }
     private void diminueTailleCarnet(){
         int taille = this.tailleCarnet()-10;
@@ -62,6 +63,7 @@ public class Carnet implements Serializable{
         for (int i=0;i < nombrePersonne ;i++){ // on remet les donnée qu'il y avait avant
             this.carnetAdresse[i] = new Personne(carnetTemp[i]);
         }
+        System.out.println("Taille diminué de 10, taille actuelle "+this.tailleCarnet()+" et "+this.nombrePersonne+" presente");
     }
 
     public void sauvegarde(){
@@ -89,16 +91,18 @@ public class Carnet implements Serializable{
     }
     public void supprimer(int index){
         this.carnetAdresse[index] = null;
-        if(this.nombrePersonne != (index-1)){ //si on ne supprime pas la derniere case remplie
-            int nbDeplacement = (nombrePersonne-index);
-            for(int i=0;i<nbDeplacement;i++){ // on déplace les objets
-                this.carnetAdresse[i]=this.carnetAdresse[i+1];
+        if(this.nombrePersonne-1 != index){ //si on ne supprime pas la derniere case remplie
+            int nbDeplacement = ((nombrePersonne-1)-index);
+            for(int i=0; i < nbDeplacement ;i++){ // on déplace les objets
+                this.carnetAdresse[index]=this.carnetAdresse[index+1];
+                index=index+1;
             }
-            this.nombrePersonne = this.nombrePersonne - 1;
         }
+        this.nombrePersonne = this.nombrePersonne - 1;
         if((this.carnetAdresse.length-this.nombrePersonne) >= 15 ){ //on verifie qu'il y a au moins 15 place de libre pour avoir un nouveau tableau pas deja plein
             this.diminueTailleCarnet();
         }
+        System.out.println("Suppression Réussi");
     }
     public void selectionRecherche(){
         Scanner sc = new Scanner(System.in);
@@ -193,13 +197,8 @@ public class Carnet implements Serializable{
     }
 
     public void afficher(){
-        for (int i = 0 ; i <= this.getNombrePersonne()-1; i++){
+        for (int i = 0 ; i < this.nombrePersonne; i++){
             this.carnetAdresse[i].afficherPersonne();
         }
     }
-
-    public int getNombrePersonne(){
-        return this.nombrePersonne;
-    }
-
 }

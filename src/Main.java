@@ -12,12 +12,14 @@ public class Main {
         String adresse;
         String tel;
         Carnet carnet = new Carnet();
+        int saisieint;
         do{
             System.out.println("\nSaisir\n " +
                     "a pour ajouter une personne\n " +
                     "c pour voir le carnet\n " +
                     "s pour sauvegarder\n " +
                     "l pour charger\n " +
+                    "t pour Test suppression\n " +
                     "q pour quitter");
             saisie = sc.nextLine();
             switch (saisie) {
@@ -37,6 +39,11 @@ public class Main {
                 case "l" -> carnet.chargement();
                 case "r" -> carnet.selectionRecherche();
                 //case "d" -> carnet.selectionRecherche();
+                case "t" -> {
+                    System.out.println("Saisir un index de la personne a supprimer");
+                    saisieint = sc.nextInt();
+                    carnet.supprimer(saisieint);
+                }
                 case "q" -> System.out.println("exit");
                 default -> System.out.println("Erreur de saisie");
             }
