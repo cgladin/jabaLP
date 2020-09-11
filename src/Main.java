@@ -19,6 +19,7 @@ public class Main {
                     "c pour voir le carnet\n " +
                     "s pour sauvegarder\n " +
                     "l pour charger\n " +
+                    "r pour Rechercher\n " +
                     "t pour Test suppression\n " +
                     "q pour quitter");
             saisie = sc.nextLine();

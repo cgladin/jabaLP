@@ -49,7 +49,7 @@ public class Carnet implements Serializable{
         for (int i=0;i <= taille ;i++){ // on remet les donnée qu'il y avait avant
             this.carnetAdresse[i] = new Personne(carnetTemp[i]);
         }
-        System.out.println("Taille augmenté de 10, taille actuelle "+this.tailleCarnet()+" et "+this.nombrePersonne+" presente");
+        System.out.println("Taille augmenté de 10, taille actuelle "+this.tailleCarnet());
     }
     private void diminueTailleCarnet(){
         int taille = this.tailleCarnet()-10;
@@ -63,7 +63,7 @@ public class Carnet implements Serializable{
         for (int i=0;i < nombrePersonne ;i++){ // on remet les donnée qu'il y avait avant
             this.carnetAdresse[i] = new Personne(carnetTemp[i]);
         }
-        System.out.println("Taille diminué de 10, taille actuelle "+this.tailleCarnet()+" et "+this.nombrePersonne+" presente");
+        System.out.println("Taille diminué de 10, taille actuelle "+this.tailleCarnet());
     }
 
     public void sauvegarde(){
@@ -84,8 +84,8 @@ public class Carnet implements Serializable{
         try{
             final FileInputStream fichier = new FileInputStream("save.ser");
             ois = new ObjectInputStream(fichier);
-            //this.carnetAdresse = (this.carnetAdresse) ois.readObject();
-        } catch (IOException e) {
+            this.carnetAdresse = (Personne[]) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -124,7 +124,7 @@ public class Carnet implements Serializable{
                 case "4" -> telephone = this.saisirRecherche("telephone", telephone);
                 default -> System.out.println("Erreur de saisie");
             }
-        }while(!saisie.equals("q") && !verifRechercheSaisieNonVide(nom, prenom, adresse, telephone));
+        }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom, prenom, adresse, telephone));
         this.trieABulle();
     }
     public boolean verifRechercheSaisieNonVide(String nom,String prenom,String adresse,String telephone){
@@ -134,6 +134,7 @@ public class Carnet implements Serializable{
     public String saisirRecherche(String critere, String critereSaisie){
         Scanner sc = new Scanner(System.in);
         String saisie;
+        boolean test= false;
         if(critereSaisie.equals("")) {
             System.out.println("Saisir "+critere+" à rechercher: ");
             critereSaisie = sc.next();
@@ -143,16 +144,17 @@ public class Carnet implements Serializable{
                 saisie = sc.next();
                 if (saisie.equals("1") || saisie.equals("2")) {
                     if (saisie.equals("1")) {
-                        System.out.println("Modifier le telephone: ");
+                        System.out.println("Modifier: ");
                         critereSaisie = sc.next();
                     }
                     if (saisie.equals("2")) {
                         critereSaisie = "";
                     }
+                    test=true;
                 } else {
                     System.out.println("Erreur de saisie");
                 }
-            }while(!saisie.equals("1") || !saisie.equals("2"));
+            }while(!test);
         }
         return critereSaisie;
     }
