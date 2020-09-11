@@ -1,6 +1,4 @@
 
-.idea/php.xml
+.idea
 save.ser
-out/production/carnetAdresse/Main.class
-out/production/carnetAdresse/carnetAdresse/Personne.class
-out/production/carnetAdresse/carnetAdresse/Carnet.class
+out
