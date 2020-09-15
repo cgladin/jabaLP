@@ -67,11 +67,11 @@ public class Carnet implements Serializable{
     }
 
     public void sauvegarde(){
-        ObjectOutputStream oos = null;
+        ObjectOutputStream oos;
         try{
             final FileOutputStream fichier = new FileOutputStream("save.ser");
             oos = new ObjectOutputStream(fichier);
-            oos.writeObject(this.carnetAdresse);
+            oos.writeObject(this);
             oos.flush();
             System.out.println("Carnet Sauvegardé");
         } catch (final java.io.IOException e){
@@ -79,12 +79,15 @@ public class Carnet implements Serializable{
         }
     }
     public void chargement(){
-        ObjectInputStream ois = null;
+        Carnet buff;
+        ObjectInputStream ois;
         try{
             final FileInputStream fichier = new FileInputStream("save.ser");
             ois = new ObjectInputStream(fichier);
-            this.carnetAdresse = (Personne[]) ois.readObject();
+            buff = (Carnet) ois.readObject();
             ois.close();
+            this.carnetAdresse = buff.carnetAdresse;
+            this.nombrePersonne = buff.nombrePersonne;
             System.out.println("Carnet chargé");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -105,7 +108,7 @@ public class Carnet implements Serializable{
         }
         System.out.println("Suppression Réussi");
     }
-    public void selectionRecherche(){
+    public void selectionRecherche(){ // affichage de la selection de critere de recherche
         Scanner sc = new Scanner(System.in);
         String saisie;
         String nom = "";
@@ -136,6 +139,7 @@ public class Carnet implements Serializable{
         /*int iprenom =this.rechercheDichotomique("prenom",prenom);
         int iadresse =this.rechercheDichotomique("adresse",adresse);
         int itelephone =this.rechercheDichotomique("telephone",telephone);*/
+        System.out.println(inom);
         if(inom > -1)
             this.carnetAdresse[inom].afficherPersonne();
 
@@ -144,7 +148,7 @@ public class Carnet implements Serializable{
         return (!nom.equals("") || !prenom.equals("") || !adresse.equals("") || !telephone.equals(""));
 
     }
-    public String saisirRecherche(String critere, String critereSaisie){
+    public String saisirRecherche(String critere, String critereSaisie){ //permet de saisir,modifier,supprimer un critère
         Scanner sc = new Scanner(System.in);
         String saisie;
         boolean test= false;
@@ -194,8 +198,7 @@ public class Carnet implements Serializable{
         int a = 0;
         int b = this.nombrePersonne - 1;
         int m = (a + b) / 2;
-        System.out.println("a:"+a+" b:"+b+" m:"+m);
-        while (a <= b && !this.carnetAdresse[m].getCritere(critere).equals(critereRechercher)) {
+        while (a < b && !this.carnetAdresse[m].getCritere(critere).equals(critereRechercher)) {
             if (this.carnetAdresse[m].getCritere(critere).compareTo(critereRechercher) < 0) {
                 a = m + 1;
             } else {
@@ -213,6 +216,7 @@ public class Carnet implements Serializable{
     }
 
     public void afficher(){
+        this.trieABulle();
         for (int i = 0 ; i < this.nombrePersonne; i++){
             this.carnetAdresse[i].afficherPersonne();
         }
