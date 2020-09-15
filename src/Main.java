@@ -20,7 +20,7 @@ public class Main {
                     "s pour sauvegarder\n " +
                     "l pour charger\n " +
                     "r pour Rechercher\n " +
-                    "t pour Test suppression\n " +
+                    "d pour Test\n " +
                     "q pour quitter");
             saisie = sc.nextLine();
             switch (saisie) {
@@ -39,12 +39,7 @@ public class Main {
                 case "s" -> carnet.sauvegarde();
                 case "l" -> carnet.chargement();
                 case "r" -> carnet.selectionRecherche();
-                //case "d" -> carnet.selectionRecherche();
-                case "t" -> {
-                    System.out.println("Saisir un index de la personne a supprimer");
-                    saisieint = sc.nextInt();
-                    carnet.supprimer(saisieint);
-                }
+                case "d" -> carnet.trieABulle();
                 case "q" -> System.out.println("exit");
                 default -> System.out.println("Erreur de saisie");
             }

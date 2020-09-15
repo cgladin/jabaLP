@@ -49,22 +49,22 @@ public class Personne  implements Serializable {
                 && this.numeroTel.equals(personneAComparer.numeroTel));
     }
     private boolean comparerNom(Personne personneAComparer){
-        return (this.nom.compareTo(personneAComparer.nom) < 0);
+        return (this.nom.compareTo(personneAComparer.nom) > 0);
     }
     private boolean comparerPrenom(Personne personneAComparer){
         return (this.nom.equals(personneAComparer.nom)
-                && this.prenom.compareTo(personneAComparer.prenom) < 0);
+                && this.prenom.compareTo(personneAComparer.prenom) > 0);
     }
     private boolean comparerAdresse(Personne personneAComparer){
         return (this.nom.equals(personneAComparer.nom)
                 && this.prenom.equals(personneAComparer.prenom)
-                && this.adresse.compareTo(personneAComparer.adresse) < 0 );
+                && this.adresse.compareTo(personneAComparer.adresse) > 0 );
     }
     private boolean comparerTel(Personne personneAComparer){
         return (this.nom.equals(personneAComparer.nom)
                 && this.prenom.equals(personneAComparer.prenom)
                 && this.adresse.equals(personneAComparer.adresse)
-                && this.numeroTel.compareTo(personneAComparer.numeroTel) < 0);
+                && this.numeroTel.compareTo(personneAComparer.numeroTel) > 0);
     }
     public void afficherPersonne(){
         System.out.println("Nom : "+this.nom +" Prenom : "+this.prenom+" adresse : "+this.adresse+" Tel : "+this.numeroTel);

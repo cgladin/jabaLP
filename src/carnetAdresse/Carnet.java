@@ -78,13 +78,14 @@ public class Carnet implements Serializable{
             e.printStackTrace();
         }
     }
-
     public void chargement(){
         ObjectInputStream ois = null;
         try{
             final FileInputStream fichier = new FileInputStream("save.ser");
             ois = new ObjectInputStream(fichier);
             this.carnetAdresse = (Personne[]) ois.readObject();
+            ois.close();
+            System.out.println("Carnet chargé");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -122,10 +123,22 @@ public class Carnet implements Serializable{
                 case "2" -> prenom = this.saisirRecherche("prenom", prenom);
                 case "3" -> adresse = this.saisirRecherche("adresse", adresse);
                 case "4" -> telephone = this.saisirRecherche("telephone", telephone);
-                default -> System.out.println("Erreur de saisie");
+                default -> {
+                    if(!saisie.equals("q"))
+                        System.out.println("Erreur de saisie");
+
+                    System.out.println("Confirmation");
+                }
             }
         }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom, prenom, adresse, telephone));
         this.trieABulle();
+        int inom = this.rechercheDichotomique("nom",nom);
+        /*int iprenom =this.rechercheDichotomique("prenom",prenom);
+        int iadresse =this.rechercheDichotomique("adresse",adresse);
+        int itelephone =this.rechercheDichotomique("telephone",telephone);*/
+        if(inom > -1)
+            this.carnetAdresse[inom].afficherPersonne();
+
     }
     public boolean verifRechercheSaisieNonVide(String nom,String prenom,String adresse,String telephone){
         return (!nom.equals("") || !prenom.equals("") || !adresse.equals("") || !telephone.equals(""));
@@ -158,14 +171,13 @@ public class Carnet implements Serializable{
         }
         return critereSaisie;
     }
-    public void trieABulle(/*int n*/) {
-        //int p = n - 1;
+    public void trieABulle() {
         int p = this.nombrePersonne - 1;
         Personne x;
         boolean tri = true;
         while (tri & p > 0) {
             tri = false;
-            for (int i = 0; i < p - 1; i++) {
+            for (int i = 0; i < p; i++) {
                 if (this.carnetAdresse[i].comparaisonPersonne(this.carnetAdresse[i+1])) {
                     x = this.carnetAdresse[i];
                     this.carnetAdresse[i] = this.carnetAdresse[i + 1];
@@ -177,18 +189,20 @@ public class Carnet implements Serializable{
         }
     }
 
-    public int RechercheDichotomique(String critere,String critereRechercher) {
+    public int rechercheDichotomique(String critere,String critereRechercher) {
         int indice;
         int a = 0;
-        int b = this.tailleCarnet() - 1;
+        int b = this.nombrePersonne - 1;
         int m = (a + b) / 2;
-        while (a < b && !this.carnetAdresse[m].getCritere(critere).equals(critereRechercher)) {
+        System.out.println("a:"+a+" b:"+b+" m:"+m);
+        while (a <= b && !this.carnetAdresse[m].getCritere(critere).equals(critereRechercher)) {
             if (this.carnetAdresse[m].getCritere(critere).compareTo(critereRechercher) < 0) {
                 a = m + 1;
             } else {
                 b = m - 1;
             }
             m = (a + b) / 2;
+            System.out.println("a:"+a+" b:"+b+" m:"+m);
         }
         if (this.carnetAdresse[m].getCritere(critere).equals(critereRechercher)) {
             indice = m;
