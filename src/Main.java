@@ -7,12 +7,7 @@ public class Main {
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         String saisie;
-        String nom;
-        String prenom;
-        String adresse;
-        String tel;
         Carnet carnet = new Carnet();
-        int saisieint;
         do{
             System.out.println("\nSaisir\n " +
                     "a pour ajouter une personne\n " +
@@ -24,17 +19,7 @@ public class Main {
                     "q pour quitter");
             saisie = sc.nextLine();
             switch (saisie) {
-                case "a" -> {
-                    System.out.println("Veuillez saisir le Prenom de la personne");
-                    prenom = sc.nextLine();
-                    System.out.println("Veuillez saisir le nom de la personne");
-                    nom = sc.nextLine();
-                    System.out.println("Veuillez saisir l'adresse de la personne");
-                    adresse = sc.nextLine();
-                    System.out.println("Veuillez saisir le numéro de la personne");
-                    tel = sc.nextLine();
-                    carnet.ajoutePersonne(nom, prenom, adresse, tel);
-                }
+                case "a" -> carnet.ajoute();
                 case "c" -> carnet.afficher();
                 case "s" -> carnet.sauvegarde();
                 case "l" -> carnet.chargement();

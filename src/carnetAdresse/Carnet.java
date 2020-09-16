@@ -7,10 +7,29 @@ import java.util.Scanner;
 public class Carnet implements Serializable{
     private Personne[] carnetAdresse;
     private int nombrePersonne;
+    private int[][] indexCarnetTrie;
 
     public Carnet(){
-        carnetAdresse = new Personne[10];
-        nombrePersonne = 0;
+        this.carnetAdresse = new Personne[10];
+        this.nombrePersonne = 0;
+        this.indexCarnetTrie = new int[10][3]; //10 ligne et 3 colonne/attribut sans compter le nom
+    }
+    public void ajoute(){
+        Scanner sc = new Scanner(System.in);
+        String nom;
+        String prenom;
+        String adresse;
+        String tel;
+        System.out.println("Veuillez saisir le Prenom de la personne");
+        prenom = sc.nextLine();
+        System.out.println("Veuillez saisir le nom de la personne");
+        nom = sc.nextLine();
+        System.out.println("Veuillez saisir l'adresse de la personne");
+        adresse = sc.nextLine();
+        System.out.println("Veuillez saisir le numéro de la personne");
+        tel = sc.nextLine();
+        this.ajoutePersonne(nom, prenom, adresse, tel);
+        sc.close();
     }
     public void ajoutePersonne(String nom, String prenom, String adresse, String tel){
         if (!this.verifEmplacementVide()) {
@@ -31,38 +50,29 @@ public class Carnet implements Serializable{
             return false;
         }
     }
-    public int tailleCarnet(){
+    private int tailleCarnet(){
         return this.carnetAdresse.length;
     }
     private void augmenteTailleCarnet(){
-
-        Personne[] carnetTemp= new Personne[this.tailleCarnet()];
         int taille = this.tailleCarnet()-1;
         int newTaille = this.tailleCarnet()+10;
-
+        Personne[] carnetTemp= new Personne[newTaille];
         for (int i=0;i <= taille ;i++){ //on copie les donnée existante dans un tableau
             carnetTemp[i] = new Personne(this.carnetAdresse[i]);
         }
-
         this.carnetAdresse = new Personne[newTaille]; //on recrée un tableau plus grand
-
-        for (int i=0;i <= taille ;i++){ // on remet les donnée qu'il y avait avant
-            this.carnetAdresse[i] = new Personne(carnetTemp[i]);
-        }
+        this.carnetAdresse= carnetTemp;
         System.out.println("Taille augmenté de 10, taille actuelle "+this.tailleCarnet());
     }
     private void diminueTailleCarnet(){
         int taille = this.tailleCarnet()-10;
-        Personne[] carnetTemp= new Personne[nombrePersonne];
+        Personne[] carnetTemp= new Personne[taille];
 
         for(int i=0; i < nombrePersonne ;i++){
             carnetTemp[i] = new Personne(this.carnetAdresse[i]);
         }
         this.carnetAdresse = new Personne[taille]; // on récrée un tableau plus petit
-
-        for (int i=0;i < nombrePersonne ;i++){ // on remet les donnée qu'il y avait avant
-            this.carnetAdresse[i] = new Personne(carnetTemp[i]);
-        }
+        this.carnetAdresse=carnetTemp;
         System.out.println("Taille diminué de 10, taille actuelle "+this.tailleCarnet());
     }
 
@@ -73,6 +83,7 @@ public class Carnet implements Serializable{
             oos = new ObjectOutputStream(fichier);
             oos.writeObject(this);
             oos.flush();
+            oos.close();
             System.out.println("Carnet Sauvegardé");
         } catch (final java.io.IOException e){
             e.printStackTrace();
@@ -93,7 +104,7 @@ public class Carnet implements Serializable{
             e.printStackTrace();
         }
     }
-    public void supprimer(int index){
+    private void supprimer(int index){
         this.carnetAdresse[index] = null;
         if(this.nombrePersonne-1 != index){ //si on ne supprime pas la derniere case remplie
             int nbDeplacement = ((nombrePersonne-1)-index);
@@ -136,19 +147,17 @@ public class Carnet implements Serializable{
         }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom, prenom, adresse, telephone));
         this.trieABulle();
         int inom = this.rechercheDichotomique("nom",nom);
-        /*int iprenom =this.rechercheDichotomique("prenom",prenom);
-        int iadresse =this.rechercheDichotomique("adresse",adresse);
-        int itelephone =this.rechercheDichotomique("telephone",telephone);*/
+
         System.out.println(inom);
         if(inom > -1)
             this.carnetAdresse[inom].afficherPersonne();
 
     }
-    public boolean verifRechercheSaisieNonVide(String nom,String prenom,String adresse,String telephone){
+    private boolean verifRechercheSaisieNonVide(String nom,String prenom,String adresse,String telephone){
         return (!nom.equals("") || !prenom.equals("") || !adresse.equals("") || !telephone.equals(""));
 
     }
-    public String saisirRecherche(String critere, String critereSaisie){ //permet de saisir,modifier,supprimer un critère
+    private String saisirRecherche(String critere, String critereSaisie){ //permet de saisir,modifier,supprimer un critère
         Scanner sc = new Scanner(System.in);
         String saisie;
         boolean test= false;
@@ -192,8 +201,11 @@ public class Carnet implements Serializable{
             p = p - 1;
         }
     }
+    public void triSecondaire(){
 
-    public int rechercheDichotomique(String critere,String critereRechercher) {
+    }
+
+    private int rechercheDichotomique(String critere,String critereRechercher) {
         int indice;
         int a = 0;
         int b = this.nombrePersonne - 1;
@@ -205,7 +217,6 @@ public class Carnet implements Serializable{
                 b = m - 1;
             }
             m = (a + b) / 2;
-            System.out.println("a:"+a+" b:"+b+" m:"+m);
         }
         if (this.carnetAdresse[m].getCritere(critere).equals(critereRechercher)) {
             indice = m;

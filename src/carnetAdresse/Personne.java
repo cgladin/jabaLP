@@ -1,12 +1,11 @@
 package carnetAdresse;
-
 import java.io.Serializable;
 
 public class Personne  implements Serializable {
-    private String nom;
-    private String prenom;
-    private String adresse;
-    private String numeroTel;
+    private final String nom;
+    private final String prenom;
+    private final String adresse;
+    private final String numeroTel;
 
     public Personne(String nom,String prenom,String adresse,String numeroTel){
         this.nom=nom;
@@ -35,7 +34,7 @@ public class Personne  implements Serializable {
         }
         return null;
     }
-    public boolean comparaisonPersonne(Personne personneAComparer){
+    public boolean comparaisonPersonne( Personne personneAComparer){
         return ( comparerNom(personneAComparer)
                 || comparerPrenom(personneAComparer)
                 || comparerAdresse(personneAComparer)
