@@ -7,12 +7,13 @@ import java.util.Scanner;
 public class Carnet implements Serializable{
     private Personne[] carnetAdresse;
     private int nombrePersonne;
-    private int[][] indexCarnetTrie;
+    private int[] indexPrenom;
+    private int[] indexAdresse;
+    private int[] indexTelephone;
 
     public Carnet(){
         this.carnetAdresse = new Personne[10];
         this.nombrePersonne = 0;
-        this.indexCarnetTrie = new int[10][3]; //10 ligne et 3 colonne/attribut sans compter le nom
     }
     public void ajoute(){
         Scanner sc = new Scanner(System.in);
@@ -29,7 +30,6 @@ public class Carnet implements Serializable{
         System.out.println("Veuillez saisir le numéro de la personne");
         tel = sc.nextLine();
         this.ajoutePersonne(nom, prenom, adresse, tel);
-        sc.close();
     }
     public void ajoutePersonne(String nom, String prenom, String adresse, String tel){
         if (!this.verifEmplacementVide()) {
@@ -145,7 +145,7 @@ public class Carnet implements Serializable{
                 }
             }
         }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom, prenom, adresse, telephone));
-        this.trieABulle();
+        this.triABulle();
         int inom = this.rechercheDichotomique("nom",nom);
 
         System.out.println(inom);
@@ -184,7 +184,38 @@ public class Carnet implements Serializable{
         }
         return critereSaisie;
     }
-    public void trieABulle() {
+    public void tri(){
+        this.triABulle();
+        this.triSecondaire("prenom");
+
+        for(int i=0;i<this.nombrePersonne;i++){
+            this.carnetAdresse[this.indexTelephone[i]].afficherPersonne();
+        }
+    }
+    /*public int partition (int début, int fin) {
+        Personne valeurPivot = this.carnetAdresse[début];
+        int d = début+1;
+        int f = fin;
+        while (d < f) {
+            while(d < f && this.carnetAdresse[f].comparaisonPersonne(valeurPivot) >=) f--;
+            while(d < f && this.carnetAdresse[d].comparaisonPersonne(valeurPivot) <= ) d++;
+            Personne temp = this.carnetAdresse[d];
+            this.carnetAdresse[d]= this.carnetAdresse[f];
+            this.carnetAdresse[f] = temp;
+        }
+        if (this.carnetAdresse[d] > valeurPivot) d--;
+        this.carnetAdresse[début] = this.carnetAdresse[d];
+        this.carnetAdresse[d] = valeurPivot;
+        return d;
+    }
+    public void triRapide(int début,int fin){
+        if (this.nombrePersonne < tailleCarnet()) {
+            int indicePivot = partition( début, fin);
+            triRapide(début, indicePivot-1);
+            triRapide(indicePivot+1, fin);
+        }
+    }*/
+    public void triABulle() {
         int p = this.nombrePersonne - 1;
         Personne x;
         boolean tri = true;
@@ -201,8 +232,51 @@ public class Carnet implements Serializable{
             p = p - 1;
         }
     }
-    public void triSecondaire(){
+    public void triSecondaire(String critere){
+        int p = this.nombrePersonne - 1;
+        String[] buff = new String[this.nombrePersonne];
+        String x;
+        boolean tri = true;
+        if(critere.equals("prenom"))
+            this.indexPrenom= new int[tailleCarnet()];
+        if(critere.equals("adresse"))
+            this.indexAdresse= new int[tailleCarnet()];
+        /*if(critere.equals("telehpone"))
+            this.indexTelephone= new int[tailleCarnet()];*/
 
+        for(int i=0;i<nombrePersonne;i++){
+            buff[i]=this.carnetAdresse[i].getCritere(critere);
+        }
+        while (tri & p > 0) {
+            tri = false;
+            for (int i = 0; i < p; i++) {
+                System.out.println(i);
+                if (buff[i].compareTo(buff[i+1]) > 0) {
+                    x = buff[i];
+                    buff[i] = buff[i + 1];
+                    buff[i + 1] = x;
+                    tri = true;
+                }
+            }
+            p = p - 1;
+        }
+        int i=0;
+        int j=0;
+        while(i<this.nombrePersonne){
+            while (j < this.nombrePersonne){ //while permet de quitter avant la fin du tableau
+                if(this.carnetAdresse[j].getCritere(critere).equals(buff[i])){
+                    if(critere.equals("prenom"))
+                        indexPrenom[i]=j;
+                    if(critere.equals("adresse"))
+                        indexAdresse[i]=j;
+                    /*if(critere.equals("telehpone"))
+                        indexTelephone[i]=j;*/
+                }
+                j++;
+            }
+            j=0;
+            i++;
+        }
     }
 
     private int rechercheDichotomique(String critere,String critereRechercher) {
@@ -227,7 +301,7 @@ public class Carnet implements Serializable{
     }
 
     public void afficher(){
-        this.trieABulle();
+        this.triABulle();
         for (int i = 0 ; i < this.nombrePersonne; i++){
             this.carnetAdresse[i].afficherPersonne();
         }

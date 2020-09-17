@@ -17,14 +17,14 @@ public class Main {
                     "r pour Rechercher\n " +
                     "d pour Test\n " +
                     "q pour quitter");
-            saisie = sc.nextLine();
+            saisie = sc.next();
             switch (saisie) {
                 case "a" -> carnet.ajoute();
                 case "c" -> carnet.afficher();
                 case "s" -> carnet.sauvegarde();
                 case "l" -> carnet.chargement();
                 case "r" -> carnet.selectionRecherche();
-                case "d" -> carnet.trieABulle();
+                case "d" -> carnet.tri();
                 case "q" -> System.out.println("exit");
                 default -> System.out.println("Erreur de saisie");
             }
