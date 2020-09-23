@@ -146,11 +146,14 @@ public class Carnet implements Serializable{
             }
         }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom, prenom, adresse, telephone));
         this.triABulle();
-        int inom = this.rechercheDichotomique("nom",nom);
-
-        System.out.println(inom);
-        if(inom > -1)
-            this.carnetAdresse[inom].afficherPersonne();
+        if(!nom.equals(""))
+            this.rechercheDichotomique("nom",nom);
+        if(!prenom.equals(""))
+            this.rechercheDichotomique("prenom",prenom);
+        if(!adresse.equals(""))
+            this.rechercheDichotomique("adresse",adresse);
+        if(!telephone.equals(""))
+            this.rechercheDichotomique("telephone",telephone);
 
     }
     private boolean verifRechercheSaisieNonVide(String nom,String prenom,String adresse,String telephone){
@@ -186,11 +189,12 @@ public class Carnet implements Serializable{
     }
     public void tri(){
         this.triABulle();
-        this.triSecondaire("prenom");
-
-        for(int i=0;i<this.nombrePersonne;i++){
-            this.carnetAdresse[this.indexTelephone[i]].afficherPersonne();
-        }
+        this.triPrenom();
+        this.triAdresse();
+        this.triTelephone();
+       /* for(int i=0;i<this.nombrePersonne;i++){
+            this.carnetAdresse[this.indexPrenom[i]].afficherPersonne();
+        }*/
     }
     /*public int partition (int début, int fin) {
         Personne valeurPivot = this.carnetAdresse[début];
@@ -232,50 +236,70 @@ public class Carnet implements Serializable{
             p = p - 1;
         }
     }
-    public void triSecondaire(String critere){
+    public void triPrenom(){
         int p = this.nombrePersonne - 1;
-        String[] buff = new String[this.nombrePersonne];
-        String x;
+        int x;
         boolean tri = true;
-        if(critere.equals("prenom"))
-            this.indexPrenom= new int[tailleCarnet()];
-        if(critere.equals("adresse"))
-            this.indexAdresse= new int[tailleCarnet()];
-        /*if(critere.equals("telehpone"))
-            this.indexTelephone= new int[tailleCarnet()];*/
+        this.indexPrenom= new int[this.nombrePersonne];
 
-        for(int i=0;i<nombrePersonne;i++){
-            buff[i]=this.carnetAdresse[i].getCritere(critere);
+        for(int i=0;i < this.nombrePersonne;i++){
+            indexPrenom[i]=i;
         }
         while (tri & p > 0) {
             tri = false;
             for (int i = 0; i < p; i++) {
-                System.out.println(i);
-                if (buff[i].compareTo(buff[i+1]) > 0) {
-                    x = buff[i];
-                    buff[i] = buff[i + 1];
-                    buff[i + 1] = x;
+                if (this.carnetAdresse[this.indexPrenom[i]].getPrenom().compareTo(this.carnetAdresse[this.indexPrenom[i+1]].getPrenom()) > 0) {
+                    x = this.indexPrenom[i];
+                    this.indexPrenom[i] = this.indexPrenom[i + 1];
+                    this.indexPrenom[i + 1] = x;
                     tri = true;
                 }
             }
             p = p - 1;
         }
-        int i=0;
-        int j=0;
-        while(i<this.nombrePersonne){
-            while (j < this.nombrePersonne){ //while permet de quitter avant la fin du tableau
-                if(this.carnetAdresse[j].getCritere(critere).equals(buff[i])){
-                    if(critere.equals("prenom"))
-                        indexPrenom[i]=j;
-                    if(critere.equals("adresse"))
-                        indexAdresse[i]=j;
-                    /*if(critere.equals("telehpone"))
-                        indexTelephone[i]=j;*/
+    }
+    public void triAdresse(){
+        int p = this.nombrePersonne - 1;
+        int x;
+        boolean tri = true;
+        this.indexAdresse= new int[this.nombrePersonne];
+
+        for(int i=0;i < this.nombrePersonne;i++){
+            indexAdresse[i]=i;
+        }
+        while (tri & p > 0) {
+            tri = false;
+            for (int i = 0; i < p; i++) {
+                if (this.carnetAdresse[this.indexAdresse[i]].getAdresse().compareTo(this.carnetAdresse[this.indexAdresse[i+1]].getAdresse()) > 0) {
+                    x = this.indexAdresse[i];
+                    this.indexAdresse[i] = this.indexAdresse[i + 1];
+                    this.indexAdresse[i + 1] = x;
+                    tri = true;
                 }
-                j++;
             }
-            j=0;
-            i++;
+            p = p - 1;
+        }
+    }
+    public void triTelephone(){
+        int p = this.nombrePersonne - 1;
+        int x;
+        boolean tri = true;
+        this.indexTelephone= new int[this.nombrePersonne];
+
+        for(int i=0;i < this.nombrePersonne;i++){
+            indexTelephone[i]=i;
+        }
+        while (tri & p > 0) {
+            tri = false;
+            for (int i = 0; i < p; i++) {
+                if (this.carnetAdresse[this.indexTelephone[i]].getNumeroTel().compareTo(this.carnetAdresse[this.indexTelephone[i+1]].getNumeroTel()) > 0) {
+                    x = this.indexTelephone[i];
+                    this.indexTelephone[i] = this.indexTelephone[i + 1];
+                    this.indexTelephone[i + 1] = x;
+                    tri = true;
+                }
+            }
+            p = p - 1;
         }
     }
 

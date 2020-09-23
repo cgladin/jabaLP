@@ -3,7 +3,7 @@ import java.io.Serializable;
 
 public class Personne  implements Serializable {
     private final String nom;
-    public final String prenom;
+    private final String prenom;
     private final String adresse;
     private final String numeroTel;
 
@@ -34,21 +34,6 @@ public class Personne  implements Serializable {
         }
         return null;
     }
-   /* public String getCritereInt(int n){
-        if(n == 1){
-            return this.nom;
-        }
-        if(n == 2){
-            return  this.prenom;
-        }
-        if(n == 3){
-            return this.adresse;
-        }
-        if(n == 4){
-            return this.numeroTel;
-        }
-        return null;
-    }*/
     public boolean comparaisonPersonne( Personne personneAComparer){
         return ( comparerNom(personneAComparer)
                 || comparerPrenom(personneAComparer)
@@ -82,5 +67,15 @@ public class Personne  implements Serializable {
     }
     public void afficherPersonne(){
         System.out.println("Nom : "+this.nom +" Prenom : "+this.prenom+" adresse : "+this.adresse+" Tel : "+this.numeroTel);
+    }
+
+    public String getPrenom() {
+        return this.prenom;
+    }
+    public String getAdresse(){
+        return this.adresse;
+    }
+    public String getNumeroTel(){
+        return this.numeroTel;
     }
 }

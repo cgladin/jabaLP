@@ -30,5 +30,7 @@ public class Main {
             }
         }while(!saisie.equals("q"));
         sc.close();
+
     }
 }
+
