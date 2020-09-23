@@ -8,7 +8,7 @@ public class Carnet implements Serializable{
     private Personne[] carnetAdresse;
     private int nombrePersonne;
     private int[] indexPrenom;
-    private int[] indexAdresse;
+    private int[] indexVille;
     private int[] indexTelephone;
 
     public Carnet(){
@@ -19,23 +19,23 @@ public class Carnet implements Serializable{
         Scanner sc = new Scanner(System.in);
         String nom;
         String prenom;
-        String adresse;
+        String ville;
         String tel;
         System.out.println("Veuillez saisir le Prenom de la personne");
         prenom = sc.nextLine();
         System.out.println("Veuillez saisir le nom de la personne");
         nom = sc.nextLine();
-        System.out.println("Veuillez saisir l'adresse de la personne");
-        adresse = sc.nextLine();
+        System.out.println("Veuillez saisir la ville de la personne");
+        ville = sc.nextLine();
         System.out.println("Veuillez saisir le numéro de la personne");
         tel = sc.nextLine();
-        this.ajoutePersonne(nom, prenom, adresse, tel);
+        this.ajoutePersonne(nom, prenom, ville, tel);
     }
-    public void ajoutePersonne(String nom, String prenom, String adresse, String tel){
+    public void ajoutePersonne(String nom, String prenom, String ville, String tel){
         if (!this.verifEmplacementVide()) {
             this.augmenteTailleCarnet();
         }
-        this.carnetAdresse[nombrePersonne]= new Personne(nom,prenom,adresse,tel);
+        this.carnetAdresse[nombrePersonne]= new Personne(nom,prenom,ville,tel);
         nombrePersonne = nombrePersonne + 1;
         System.out.println("Personne ajoutée \n");
     }
@@ -117,6 +117,7 @@ public class Carnet implements Serializable{
         if((this.carnetAdresse.length-this.nombrePersonne) >= 15 ){ //on verifie qu'il y a au moins 15 place de libre pour avoir un nouveau tableau pas deja plein
             this.diminueTailleCarnet();
         }
+        this.triIndex();
         System.out.println("Suppression Réussi");
     }
     public void selectionRecherche(){ // affichage de la selection de critere de recherche
@@ -124,18 +125,18 @@ public class Carnet implements Serializable{
         String saisie;
         String nom = "";
         String prenom ="";
-        String adresse="";
+        String ville="";
         String telephone="";
 
         do{
             System.out.println("Quels sont les critères de recherche: " );
-            System.out.println("1: nom="+nom+", 2: prenom="+prenom+", 3: adresse="+adresse+", 4: Telephone="+telephone+", q: confirmé \n" );
+            System.out.println("1: nom="+nom+", 2: prenom="+prenom+", 3: ville="+ville+", 4: Telephone="+telephone+", q: confirmé \n" );
             saisie = sc.next();
 
             switch (saisie) {
                 case "1" -> nom = this.saisirRecherche("nom", nom);
                 case "2" -> prenom = this.saisirRecherche("prenom", prenom);
-                case "3" -> adresse = this.saisirRecherche("adresse", adresse);
+                case "3" -> ville = this.saisirRecherche("ville", ville);
                 case "4" -> telephone = this.saisirRecherche("telephone", telephone);
                 default -> {
                     if(!saisie.equals("q"))
@@ -144,20 +145,71 @@ public class Carnet implements Serializable{
                     System.out.println("Confirmation");
                 }
             }
-        }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom, prenom, adresse, telephone));
-        this.triABulle();
+        }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom, prenom, ville, telephone));
+
+        this.tri();
+        int inom = -1;
+        int iprenom = -1;
+        int iville = -1;
+        int itelephone = -1;
         if(!nom.equals(""))
-            this.rechercheDichotomique("nom",nom);
+           inom = this.rechercheDichotomiqueNom(nom);
         if(!prenom.equals(""))
-            this.rechercheDichotomique("prenom",prenom);
-        if(!adresse.equals(""))
-            this.rechercheDichotomique("adresse",adresse);
+           iprenom = this.rechercheDichotomiquePrenom(prenom);
+        if(!ville.equals(""))
+           iville = this.rechercheDichotomiqueVille(ville);
         if(!telephone.equals(""))
-            this.rechercheDichotomique("telephone",telephone);
+           itelephone = this.rechercheDichotomiqueTelephone(telephone);
+        int index = -1;
+        System.out.println(inom+" "+iprenom+" "+iville+" "+itelephone);
+        if(inom != -1 && ( inom == iprenom
+        || ( inom == iprenom && inom == iville)
+        || ( inom == iprenom && inom == iville && inom == itelephone)
+        || inom == iville || inom == itelephone)) {
+            this.afficherIndex(inom);
+            System.out.println("nom");
+            index =inom;
+        }
+        if(iprenom != -1 && (iprenom == iville
+        || (iprenom == iville && iprenom == itelephone)
+        || iprenom == itelephone)){
+            this.afficherIndex(iprenom);
+            System.out.println("prenom");
+            index=iprenom;
+        }
+        if(iville != -1 && iville == itelephone){
+            this.afficherIndex(iville);
+            System.out.println("ville");
+            index=iville;
+        }
+        if(index == -1){
+            if(inom != -1)
+                this.afficherIndex(inom);
+            if(iprenom != -1)
+                this.afficherIndex(iprenom);
+            if(iville != -1)
+                this.afficherIndex(iville);
+            if(itelephone != -1)
+                this.afficherIndex(itelephone);
+        }
+        int saisieInt;
+        do{
+            System.out.println("Supprimer la personne en rentrant son index sinon -1 pour quitter");
+            saisieInt = sc.nextInt();
+            if(saisieInt != -1 && sc.hasNextInt()){
+                this.supprimer(index);
+            } else {
+                System.out.println("erreur de saisie");
+            }
+        }while (saisieInt != -1);
 
     }
-    private boolean verifRechercheSaisieNonVide(String nom,String prenom,String adresse,String telephone){
-        return (!nom.equals("") || !prenom.equals("") || !adresse.equals("") || !telephone.equals(""));
+    private void afficherIndex(int index){
+        System.out.println("index :" +index);
+        this.carnetAdresse[index].afficherPersonne();
+    }
+    private boolean verifRechercheSaisieNonVide(String nom,String prenom,String ville,String telephone){
+        return (!nom.equals("") || !prenom.equals("") || !ville.equals("") || !telephone.equals(""));
 
     }
     private String saisirRecherche(String critere, String critereSaisie){ //permet de saisir,modifier,supprimer un critère
@@ -189,12 +241,12 @@ public class Carnet implements Serializable{
     }
     public void tri(){
         this.triABulle();
+        this.triIndex();
+    }
+    public void triIndex(){
         this.triPrenom();
         this.triAdresse();
         this.triTelephone();
-       /* for(int i=0;i<this.nombrePersonne;i++){
-            this.carnetAdresse[this.indexPrenom[i]].afficherPersonne();
-        }*/
     }
     /*public int partition (int début, int fin) {
         Personne valeurPivot = this.carnetAdresse[début];
@@ -262,18 +314,18 @@ public class Carnet implements Serializable{
         int p = this.nombrePersonne - 1;
         int x;
         boolean tri = true;
-        this.indexAdresse= new int[this.nombrePersonne];
+        this.indexVille = new int[this.nombrePersonne];
 
         for(int i=0;i < this.nombrePersonne;i++){
-            indexAdresse[i]=i;
+            indexVille[i]=i;
         }
         while (tri & p > 0) {
             tri = false;
             for (int i = 0; i < p; i++) {
-                if (this.carnetAdresse[this.indexAdresse[i]].getAdresse().compareTo(this.carnetAdresse[this.indexAdresse[i+1]].getAdresse()) > 0) {
-                    x = this.indexAdresse[i];
-                    this.indexAdresse[i] = this.indexAdresse[i + 1];
-                    this.indexAdresse[i + 1] = x;
+                if (this.carnetAdresse[this.indexVille[i]].getVille().compareTo(this.carnetAdresse[this.indexVille[i+1]].getVille()) > 0) {
+                    x = this.indexVille[i];
+                    this.indexVille[i] = this.indexVille[i + 1];
+                    this.indexVille[i + 1] = x;
                     tri = true;
                 }
             }
@@ -303,20 +355,80 @@ public class Carnet implements Serializable{
         }
     }
 
-    private int rechercheDichotomique(String critere,String critereRechercher) {
+    private int rechercheDichotomiqueNom(String critereRechercher) {
         int indice;
         int a = 0;
         int b = this.nombrePersonne - 1;
         int m = (a + b) / 2;
-        while (a < b && !this.carnetAdresse[m].getCritere(critere).equals(critereRechercher)) {
-            if (this.carnetAdresse[m].getCritere(critere).compareTo(critereRechercher) < 0) {
+        while (a < b && !this.carnetAdresse[m].getNom().equals(critereRechercher)) {
+            if (this.carnetAdresse[m].getNom().compareTo(critereRechercher) < 0) {
                 a = m + 1;
             } else {
                 b = m - 1;
             }
             m = (a + b) / 2;
         }
-        if (this.carnetAdresse[m].getCritere(critere).equals(critereRechercher)) {
+        if (this.carnetAdresse[m].getNom().equals(critereRechercher)) {
+            indice = m;
+        } else {
+            indice = -1;
+        }
+        return indice;
+    }
+    private int rechercheDichotomiquePrenom(String critereRechercher) {
+        int indice;
+        int a = 0;
+        int b = this.nombrePersonne - 1;
+        int m = (a + b) / 2;
+        while (a < b && !this.carnetAdresse[this.indexPrenom[m]].getPrenom().equals(critereRechercher)) {
+            if (this.carnetAdresse[this.indexPrenom[m]].getPrenom().compareTo(critereRechercher) < 0) {
+                a = m + 1;
+            } else {
+                b = m - 1;
+            }
+            m = (a + b) / 2;
+        }
+        if (this.carnetAdresse[this.indexPrenom[m]].getPrenom().equals(critereRechercher)) {
+            indice = m;
+        } else {
+            indice = -1;
+        }
+        return indice;
+    }
+    private int rechercheDichotomiqueVille(String critereRechercher) {
+        int indice;
+        int a = 0;
+        int b = this.nombrePersonne - 1;
+        int m = (a + b) / 2;
+        while (a < b && !this.carnetAdresse[this.indexVille[m]].getVille().equals(critereRechercher)) {
+            if (this.carnetAdresse[this.indexVille[m]].getVille().compareTo(critereRechercher) < 0) {
+                a = m + 1;
+            } else {
+                b = m - 1;
+            }
+            m = (a + b) / 2;
+        }
+        if (this.carnetAdresse[this.indexVille[m]].getVille().equals(critereRechercher)) {
+            indice = m;
+        } else {
+            indice = -1;
+        }
+        return indice;
+    }
+    private int rechercheDichotomiqueTelephone(String critereRechercher) {
+        int indice;
+        int a = 0;
+        int b = this.nombrePersonne - 1;
+        int m = (a + b) / 2;
+        while (a < b && !this.carnetAdresse[this.indexTelephone[m]].getNumeroTel().equals(critereRechercher)) {
+            if (this.carnetAdresse[this.indexTelephone[m]].getNumeroTel().compareTo(critereRechercher) < 0) {
+                a = m + 1;
+            } else {
+                b = m - 1;
+            }
+            m = (a + b) / 2;
+        }
+        if (this.carnetAdresse[this.indexTelephone[m]].getNumeroTel().equals(critereRechercher)) {
             indice = m;
         } else {
             indice = -1;

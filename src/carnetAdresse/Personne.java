@@ -4,35 +4,20 @@ import java.io.Serializable;
 public class Personne  implements Serializable {
     private final String nom;
     private final String prenom;
-    private final String adresse;
+    private final String ville;
     private final String numeroTel;
 
-    public Personne(String nom,String prenom,String adresse,String numeroTel){
+    public Personne(String nom, String prenom, String ville, String numeroTel){
         this.nom=nom;
         this.prenom=prenom;
-        this.adresse=adresse;
+        this.ville = ville;
         this.numeroTel=numeroTel;
     }
     public Personne(Personne carnet){
         this.nom = carnet.nom;
         this.prenom = carnet.prenom;
-        this.adresse = carnet.adresse;
+        this.ville = carnet.ville;
         this.numeroTel = carnet.numeroTel;
-    }
-    public String getCritere(String critere){
-        if(critere.equals("nom")){
-            return this.nom;
-        }
-        if(critere.equals("prenom")){
-            return  this.prenom;
-        }
-        if(critere.equals("adresse")){
-            return this.adresse;
-        }
-        if(critere.equals("tel")){
-            return this.numeroTel;
-        }
-        return null;
     }
     public boolean comparaisonPersonne( Personne personneAComparer){
         return ( comparerNom(personneAComparer)
@@ -44,7 +29,7 @@ public class Personne  implements Serializable {
     private boolean comparaisonEgal(Personne personneAComparer){
         return  (this.nom.equals(personneAComparer.nom)
                 && this.prenom.equals(personneAComparer.prenom)
-                && this.adresse.equals(personneAComparer.adresse)
+                && this.ville.equals(personneAComparer.ville)
                 && this.numeroTel.equals(personneAComparer.numeroTel));
     }
     private boolean comparerNom(Personne personneAComparer){
@@ -57,23 +42,25 @@ public class Personne  implements Serializable {
     private boolean comparerAdresse(Personne personneAComparer){
         return (this.nom.equals(personneAComparer.nom)
                 && this.prenom.equals(personneAComparer.prenom)
-                && this.adresse.compareTo(personneAComparer.adresse) > 0 );
+                && this.ville.compareTo(personneAComparer.ville) > 0 );
     }
     private boolean comparerTel(Personne personneAComparer){
         return (this.nom.equals(personneAComparer.nom)
                 && this.prenom.equals(personneAComparer.prenom)
-                && this.adresse.equals(personneAComparer.adresse)
+                && this.ville.equals(personneAComparer.ville)
                 && this.numeroTel.compareTo(personneAComparer.numeroTel) > 0);
     }
     public void afficherPersonne(){
-        System.out.println("Nom : "+this.nom +" Prenom : "+this.prenom+" adresse : "+this.adresse+" Tel : "+this.numeroTel);
+        System.out.println("Nom: "+this.nom +" Prenom: "+this.prenom+" Adresse: "+this.ville +" Telephone: "+this.numeroTel);
     }
-
+    public String getNom(){
+        return this.nom;
+    }
     public String getPrenom() {
         return this.prenom;
     }
-    public String getAdresse(){
-        return this.adresse;
+    public String getVille(){
+        return this.ville;
     }
     public String getNumeroTel(){
         return this.numeroTel;
