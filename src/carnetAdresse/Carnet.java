@@ -148,58 +148,117 @@ public class Carnet implements Serializable{
         }while(!saisie.equals("q") && verifRechercheSaisieNonVide(nom, prenom, ville, telephone));
 
         this.tri();
-        int inom = -1;
-        int iprenom = -1;
-        int iville = -1;
-        int itelephone = -1;
-        if(!nom.equals(""))
-           inom = this.rechercheDichotomiqueNom(nom);
-        if(!prenom.equals(""))
-           iprenom = this.rechercheDichotomiquePrenom(prenom);
-        if(!ville.equals(""))
-           iville = this.rechercheDichotomiqueVille(ville);
-        if(!telephone.equals(""))
-           itelephone = this.rechercheDichotomiqueTelephone(telephone);
-        int index = -1;
-        System.out.println(inom+" "+iprenom+" "+iville+" "+itelephone);
-        if(inom != -1 && ( inom == iprenom
-        || ( inom == iprenom && inom == iville)
-        || ( inom == iprenom && inom == iville && inom == itelephone)
-        || inom == iville || inom == itelephone)) {
-            this.afficherIndex(inom);
-            System.out.println("nom");
-            index =inom;
+        int index;
+        int i;
+        boolean recherche = false; //afin de rentrer que dans 1 des boucles suivantes
+        if(!nom.equals("") && !recherche){
+            index = this.rechercheDichotomiqueNom(nom);
+            recherche=true;
+            i=index;
+            while(i < this.nombrePersonne && this.carnetAdresse[i].getNom().equals(nom)){
+                if(!prenom.equals("") || !ville.equals("") || !telephone.equals("") ){
+                    if(this.carnetAdresse[i].getPrenom().equals(prenom) && this.carnetAdresse[i].getVille().equals(ville) && this.carnetAdresse[i].getNumeroTel().equals(telephone)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getPrenom().equals(prenom) && this.carnetAdresse[i].getVille().equals(ville)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getPrenom().equals(prenom) && this.carnetAdresse[i].getNumeroTel().equals(telephone)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNumeroTel().equals(telephone)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getVille().equals(ville)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getPrenom().equals(prenom)){
+                        this.afficherIndex(i);
+                    }
+                } else { // si il y a que le nom rechercher affiche les occurences
+                    this.afficherIndex(i);
+                }
+                i=i+1;
+            }
         }
-        if(iprenom != -1 && (iprenom == iville
-        || (iprenom == iville && iprenom == itelephone)
-        || iprenom == itelephone)){
-            this.afficherIndex(iprenom);
-            System.out.println("prenom");
-            index=iprenom;
+
+        if(!prenom.equals("") && !recherche) {
+            index = this.rechercheDichotomiquePrenom(prenom);
+            recherche=true;
+            i=index;
+            while(i < this.nombrePersonne && this.carnetAdresse[i].getPrenom().equals(prenom)){
+                if(!nom.equals("") || !ville.equals("") || !telephone.equals("") ){
+                    if(this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getVille().equals(ville) && this.carnetAdresse[i].getNumeroTel().equals(telephone)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getVille().equals(ville)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getNumeroTel().equals(telephone)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNumeroTel().equals(telephone)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getVille().equals(ville)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNom().equals(nom)){
+                        this.afficherIndex(i);
+                    }
+                } else { // si il y a que le nom rechercher affiche les occurences
+                    this.afficherIndex(i);
+                }
+                i=i+1;
+            }
         }
-        if(iville != -1 && iville == itelephone){
-            this.afficherIndex(iville);
-            System.out.println("ville");
-            index=iville;
+        if(!ville.equals("") && !recherche) { // a verif
+            index = this.rechercheDichotomiqueVille(ville);
+            recherche=true;
+            i=index;
+            while(i < this.nombrePersonne && this.carnetAdresse[i].getVille().equals(ville)){
+                if(!nom.equals("") || !prenom.equals("") || !telephone.equals("") ){
+                    if(this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getPrenom().equals(prenom) && this.carnetAdresse[i].getNumeroTel().equals(telephone)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getPrenom().equals(prenom)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getNumeroTel().equals(telephone)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNumeroTel().equals(telephone)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getPrenom().equals(prenom)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNom().equals(nom)){
+                        this.afficherIndex(i);
+                    }
+                } else { // si il y a que le nom rechercher affiche les occurences
+                    this.afficherIndex(i);
+                }
+                i=i+1;
+            }
         }
-        if(index == -1){
-            if(inom != -1)
-                this.afficherIndex(inom);
-            if(iprenom != -1)
-                this.afficherIndex(iprenom);
-            if(iville != -1)
-                this.afficherIndex(iville);
-            if(itelephone != -1)
-                this.afficherIndex(itelephone);
+        if(!telephone.equals("") && !recherche) { // a verif
+            index = this.rechercheDichotomiqueTelephone(telephone);
+            recherche=true;
+            i=index;
+            while(i < this.nombrePersonne && this.carnetAdresse[i].getNumeroTel().equals(telephone)){
+                if(!nom.equals("") || !ville.equals("") || !prenom.equals("") ){
+                    if(this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getVille().equals(ville) && this.carnetAdresse[i].getPrenom().equals(prenom)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getVille().equals(ville)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getPrenom().equals(prenom)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getPrenom().equals(prenom)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getVille().equals(ville)){
+                        this.afficherIndex(i);
+                    } else if (this.carnetAdresse[i].getNom().equals(nom)){
+                        this.afficherIndex(i);
+                    }
+                } else { // si il y a que le nom rechercher affiche les occurences
+                    this.afficherIndex(i);
+                }
+                i=i+1;
+            }
         }
-        int saisieInt;
+
+       int saisieInt;
         do{
             System.out.println("Supprimer la personne en rentrant son index sinon -1 pour quitter");
             saisieInt = sc.nextInt();
             if(saisieInt != -1 && sc.hasNextInt()){
-                this.supprimer(index);
-            } else {
-                System.out.println("erreur de saisie");
+                this.supprimer(saisieInt);
             }
         }while (saisieInt != -1);
 
@@ -239,11 +298,11 @@ public class Carnet implements Serializable{
         }
         return critereSaisie;
     }
-    public void tri(){
+    public void tri(){ //permet de trier tout avec une méthode
         this.triABulle();
         this.triIndex();
     }
-    public void triIndex(){
+    public void triIndex(){ // réunis seulement les tri des index
         this.triPrenom();
         this.triAdresse();
         this.triTelephone();
