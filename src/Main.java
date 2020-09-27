@@ -10,7 +10,6 @@ public class Main {
         Carnet carnet = new Carnet();
         do{
             System.out.println("""
-
                     Saisir
                      a pour ajouter une personne
                      c pour voir le carnet

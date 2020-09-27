@@ -151,7 +151,7 @@ public class Carnet implements Serializable{
         int index;
         int i;
         boolean recherche = false; //afin de rentrer que dans 1 des boucles suivantes
-        if(!nom.equals("") && !recherche){
+        if(!nom.equals("")){
             index = this.rechercheDichotomiqueNom(nom);
             recherche=true;
             i=index;
@@ -427,8 +427,16 @@ public class Carnet implements Serializable{
             }
             m = (a + b) / 2;
         }
-        if (this.carnetAdresse[m].getNom().equals(critereRechercher)) {
-            indice = m;
+        if (this.carnetAdresse[m].getNom().equals(critereRechercher)) { //si une valeur est trouvé
+            int aGauche = m-1;
+            if(aGauche >= 0 && this.carnetAdresse[aGauche].getNom().equals(critereRechercher)){
+                while(aGauche > 0 && this.carnetAdresse[aGauche].getNom().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
+                    aGauche = aGauche-1;
+                }
+                indice = aGauche;
+            } else {
+                indice = m;
+            }
         } else {
             indice = -1;
         }
@@ -448,7 +456,15 @@ public class Carnet implements Serializable{
             m = (a + b) / 2;
         }
         if (this.carnetAdresse[this.indexPrenom[m]].getPrenom().equals(critereRechercher)) {
-            indice = m;
+            int aGauche = m-1;
+            if(aGauche >= 0 && this.carnetAdresse[this.indexPrenom[aGauche]].getPrenom().equals(critereRechercher)){
+                while(aGauche > 0 && this.carnetAdresse[this.indexPrenom[aGauche]].getPrenom().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
+                    aGauche = aGauche-1;
+                }
+                indice = aGauche;
+            } else {
+                indice = m;
+            }
         } else {
             indice = -1;
         }
@@ -468,7 +484,15 @@ public class Carnet implements Serializable{
             m = (a + b) / 2;
         }
         if (this.carnetAdresse[this.indexVille[m]].getVille().equals(critereRechercher)) {
-            indice = m;
+            int aGauche = m-1;
+            if(aGauche >= 0 && this.carnetAdresse[this.indexVille[aGauche]].getVille().equals(critereRechercher)){
+                while(aGauche > 0 && this.carnetAdresse[this.indexVille[aGauche]].getVille().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
+                    aGauche = aGauche-1;
+                }
+                indice = aGauche;
+            } else {
+                indice = m;
+            }
         } else {
             indice = -1;
         }
@@ -488,7 +512,15 @@ public class Carnet implements Serializable{
             m = (a + b) / 2;
         }
         if (this.carnetAdresse[this.indexTelephone[m]].getNumeroTel().equals(critereRechercher)) {
-            indice = m;
+            int aGauche = m-1;
+            if(aGauche >= 0 && this.carnetAdresse[this.indexTelephone[aGauche]].getNumeroTel().equals(critereRechercher)){
+                while(aGauche > 0 && this.carnetAdresse[this.indexTelephone[aGauche]].getNumeroTel().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
+                    aGauche = aGauche-1;
+                }
+                indice = aGauche;
+            } else {
+                indice = m;
+            }
         } else {
             indice = -1;
         }
