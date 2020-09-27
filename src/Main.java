@@ -9,14 +9,16 @@ public class Main {
         String saisie;
         Carnet carnet = new Carnet();
         do{
-            System.out.println("\nSaisir\n " +
-                    "a pour ajouter une personne\n " +
-                    "c pour voir le carnet\n " +
-                    "s pour sauvegarder\n " +
-                    "l pour charger\n " +
-                    "r pour Rechercher\n " +
-                    "d pour Test\n " +
-                    "q pour quitter");
+            System.out.println("""
+
+                    Saisir
+                     a pour ajouter une personne
+                     c pour voir le carnet
+                     s pour sauvegarder
+                     l pour charger
+                     r pour Rechercher
+                     d pour Test
+                     q pour quitter""");
             saisie = sc.next();
             switch (saisie) {
                 case "a" -> carnet.ajoute();
