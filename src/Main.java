@@ -1,14 +1,13 @@
 import carnetAdresse.Carnet;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String saisie;
         Carnet carnet = new Carnet();
-        do{
+        do {
             System.out.println("""
                     Saisir
                      a pour ajouter une personne
@@ -29,7 +28,7 @@ public class Main {
                 case "q" -> System.out.println("exit");
                 default -> System.out.println("Erreur de saisie");
             }
-        }while(!saisie.equals("q"));
+        } while (!saisie.equals("q"));
         sc.close();
 
     }
