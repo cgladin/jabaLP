@@ -265,14 +265,24 @@ public class Carnet implements Serializable {
             }
 
             int saisieInt;
-            do {
-                System.out.println("Supprimer la personne en rentrant son index sinon -1 pour quitter");
-                saisieInt = sc.nextInt();
-                if (saisieInt != -1 && sc.hasNextInt()) {
-                    this.supprimer(saisieInt);
-                }
-            } while (saisieInt != -1);
-
+            try {
+                do {
+                    System.out.println("Supprimer la personne en rentrant son index sinon -1 pour quitter");
+                    saisieInt = sc.nextInt();
+                    if (saisieInt != -1 && saisieInt < this.nombrePersonne) {
+                        if(this.carnetAdresse[saisieInt].getNom().equals(nom)
+                        || this.carnetAdresse[saisieInt].getPrenom().equals(prenom)
+                        || this.carnetAdresse[saisieInt].getVille().equals(ville)
+                        || this.carnetAdresse[saisieInt].getNumeroTel().equals(telephone)){
+                            this.supprimer(saisieInt);
+                        } else {
+                            System.out.println("Erreur de saisie");
+                        }
+                    }
+                } while (saisieInt != -1);
+            } catch (Exception e) {
+                System.out.println("Erreur de saisie");
+            }
         } else {
             System.out.println("Erreur le tableau est vide");
         }
@@ -554,9 +564,13 @@ public class Carnet implements Serializable {
     }
 
     public void afficher() {
-        this.triABulle();
-        for (int i = 0; i < this.nombrePersonne; i++) {
-            this.carnetAdresse[i].afficherPersonne();
+        if(this.nombrePersonne >0){
+            this.triABulle();
+            for (int i = 0; i < this.nombrePersonne; i++) {
+                this.carnetAdresse[i].afficherPersonne();
+            }
+        } else {
+            System.out.println("Erreur tableau vide");
         }
     }
 }

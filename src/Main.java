@@ -14,8 +14,7 @@ public class Main {
                      c pour voir le carnet
                      s pour sauvegarder
                      l pour charger
-                     r pour Rechercher
-                     d pour Test
+                     r pour Rechercher/Supprimer
                      q pour quitter""");
             saisie = sc.next();
             switch (saisie) {
@@ -24,7 +23,6 @@ public class Main {
                 case "s" -> carnet.sauvegarde();
                 case "l" -> carnet.chargement();
                 case "r" -> carnet.selectionRecherche();
-                case "d" -> carnet.tri();
                 case "q" -> System.out.println("exit");
                 default -> System.out.println("Erreur de saisie");
             }
