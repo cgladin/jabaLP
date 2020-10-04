@@ -197,17 +197,11 @@ public class Carnet implements Serializable {
                 if (i != -1) {
                     while (i < this.nombrePersonne && this.carnetAdresse[this.indexPrenom[i]].getPrenom().equals(prenom)) { //affiche toute les occurrences correspondant au prénom + d'autres critères
                         if (!nom.equals("") || !ville.equals("") || !telephone.equals("")) {
-                            if (this.carnetAdresse[this.indexPrenom[i]].getNom().equals(nom) && this.carnetAdresse[this.indexPrenom[i]].getVille().equals(ville) && this.carnetAdresse[this.indexPrenom[i]].getNumeroTel().equals(telephone)) {
-                                this.afficherIndex(this.indexPrenom[i]);
-                            } else if (this.carnetAdresse[this.indexPrenom[i]].getNom().equals(nom) && this.carnetAdresse[this.indexPrenom[i]].getVille().equals(ville)) {
-                                this.afficherIndex(this.indexPrenom[i]);
-                            } else if (this.carnetAdresse[this.indexPrenom[i]].getNom().equals(nom) && this.carnetAdresse[this.indexPrenom[i]].getNumeroTel().equals(telephone)) {
+                            if(this.carnetAdresse[this.indexPrenom[i]].getVille().equals(ville) && this.carnetAdresse[this.indexPrenom[i]].getNumeroTel().equals(telephone)) {
                                 this.afficherIndex(this.indexPrenom[i]);
                             } else if (this.carnetAdresse[this.indexPrenom[i]].getNumeroTel().equals(telephone)) {
                                 this.afficherIndex(this.indexPrenom[i]);
                             } else if (this.carnetAdresse[this.indexPrenom[i]].getVille().equals(ville)) {
-                                this.afficherIndex(this.indexPrenom[i]);
-                            } else if (this.carnetAdresse[this.indexPrenom[i]].getNom().equals(nom)) {
                                 this.afficherIndex(this.indexPrenom[i]);
                             }
                         } else { // si il y a que le nom rechercher affiche les occurences
@@ -227,19 +221,9 @@ public class Carnet implements Serializable {
                 if (i != -1) {
                     while (i < this.nombrePersonne && this.carnetAdresse[this.indexVille[i]].getVille().equals(ville)) {//affiche toute les occurrences correspondant au ville + d'autres critères
                         if (!nom.equals("") || !prenom.equals("") || !telephone.equals("")) {
-                            if (this.carnetAdresse[this.indexVille[i]].getNom().equals(nom) && this.carnetAdresse[this.indexVille[i]].getPrenom().equals(prenom) && this.carnetAdresse[this.indexVille[i]].getNumeroTel().equals(telephone)) {
+                           if (this.carnetAdresse[this.indexVille[i]].getNumeroTel().equals(telephone)) {
                                 this.afficherIndex(this.indexVille[i]);
-                            } else if (this.carnetAdresse[this.indexVille[i]].getNom().equals(nom) && this.carnetAdresse[this.indexVille[i]].getPrenom().equals(prenom)) {
-                                this.afficherIndex(this.indexVille[i]);
-                            } else if (this.carnetAdresse[this.indexVille[i]].getNom().equals(nom) && this.carnetAdresse[this.indexVille[i]].getNumeroTel().equals(telephone)) {
-                                this.afficherIndex(this.indexVille[i]);
-                            } else if (this.carnetAdresse[this.indexVille[i]].getNumeroTel().equals(telephone)) {
-                                this.afficherIndex(this.indexVille[i]);
-                            } else if (this.carnetAdresse[this.indexVille[i]].getPrenom().equals(prenom)) {
-                                this.afficherIndex(this.indexVille[i]);
-                            } else if (this.carnetAdresse[this.indexVille[i]].getNom().equals(nom)) {
-                                this.afficherIndex(this.indexVille[i]);
-                            }
+                           }
                         } else { // si il y a que le nom rechercher affiche les occurences
                             this.afficherIndex(this.indexVille[i]);
                         }
@@ -256,21 +240,7 @@ public class Carnet implements Serializable {
                 i = index;
                 if (i != -1) {
                     while (i < this.nombrePersonne && this.carnetAdresse[this.indexTelephone[i]].getNumeroTel().equals(telephone)) { //affiche toute les occurrences correspondant au téléphone + d'autres critères
-                        if (!nom.equals("") || !ville.equals("") || !prenom.equals("")) {
-                            if (this.carnetAdresse[this.indexTelephone[i]].getNom().equals(nom) && this.carnetAdresse[this.indexTelephone[i]].getVille().equals(ville) && this.carnetAdresse[this.indexTelephone[i]].getPrenom().equals(prenom)) {
-                                this.afficherIndex(this.indexTelephone[i]);
-                            } else if (this.carnetAdresse[this.indexTelephone[i]].getNom().equals(nom) && this.carnetAdresse[this.indexTelephone[i]].getVille().equals(ville)) {
-                                this.afficherIndex(this.indexTelephone[i]);
-                            } else if (this.carnetAdresse[this.indexTelephone[i]].getNom().equals(nom) && this.carnetAdresse[this.indexTelephone[i]].getPrenom().equals(prenom)) {
-                                this.afficherIndex(this.indexTelephone[i]);
-                            } else if (this.carnetAdresse[this.indexTelephone[i]].getPrenom().equals(prenom)) {
-                                this.afficherIndex(this.indexTelephone[i]);
-                            } else if (this.carnetAdresse[this.indexTelephone[i]].getVille().equals(ville)) {
-                                this.afficherIndex(this.indexTelephone[i]);
-                            } else if (this.carnetAdresse[this.indexTelephone[i]].getNom().equals(nom)) {
-                                this.afficherIndex(this.indexTelephone[i]);
-                            }
-                        } else { // si il y a que le nom rechercher affiche les occurences
+                        if (nom.equals("") || ville.equals("") || prenom.equals("")) {
                             this.afficherIndex(this.indexTelephone[i]);
                         }
                         i = i + 1;
