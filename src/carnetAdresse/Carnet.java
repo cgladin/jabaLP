@@ -33,7 +33,7 @@ public class Carnet implements Serializable {
         this.ajoutePersonne(nom, prenom, ville, tel);
     }
 
-    public void ajoutePersonne(String nom, String prenom, String ville, String tel) {
+    private void ajoutePersonne(String nom, String prenom, String ville, String tel) {
         if (!this.verifEmplacementVide()) {
             this.augmenteTailleCarnet();
         }
@@ -154,12 +154,12 @@ public class Carnet implements Serializable {
                         System.out.println("Confirmation");
                     }
                 }
-            } while ((verifRechercheSaisieNonVide(nom, prenom, ville, telephone) && !saisie.equals("q")) == false);
+            } while ((verifRechercheSaisieNonVide(nom, prenom, ville, telephone) && saisie.equals("q")) == false);
             this.tri();
             int index;
             int i;
             boolean recherche = false; //afin de rentrer que dans 1 des boucles suivantes
-            boolean trouve = false; //afin de rentrer ou pas dans la suppression
+            boolean trouve = true;
             if (!nom.equals("")) {
                 index = this.rechercheDichotomiqueNom(nom);
                 recherche = true;
@@ -187,36 +187,37 @@ public class Carnet implements Serializable {
                     }
                 } else {
                     System.out.println("Aucune personne trouvé avec ces critères");
+                    trouve = false;
                 }
             }
-
             if (!prenom.equals("") && !recherche) { // si le critère nom est vide
                 index = this.rechercheDichotomiquePrenom(prenom);
                 recherche = true;
                 i = index;
                 if (i != -1) {
-                    while (i < this.nombrePersonne && this.carnetAdresse[i].getPrenom().equals(prenom)) { //affiche toute les occurrences correspondant au prénom + d'autres critères
+                    while (i < this.nombrePersonne && this.carnetAdresse[this.indexPrenom[i]].getPrenom().equals(prenom)) { //affiche toute les occurrences correspondant au prénom + d'autres critères
                         if (!nom.equals("") || !ville.equals("") || !telephone.equals("")) {
-                            if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getVille().equals(ville) && this.carnetAdresse[i].getNumeroTel().equals(telephone)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getVille().equals(ville)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getNumeroTel().equals(telephone)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNumeroTel().equals(telephone)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getVille().equals(ville)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNom().equals(nom)) {
-                                this.afficherIndex(i);
+                            if (this.carnetAdresse[this.indexPrenom[i]].getNom().equals(nom) && this.carnetAdresse[this.indexPrenom[i]].getVille().equals(ville) && this.carnetAdresse[this.indexPrenom[i]].getNumeroTel().equals(telephone)) {
+                                this.afficherIndex(this.indexPrenom[i]);
+                            } else if (this.carnetAdresse[this.indexPrenom[i]].getNom().equals(nom) && this.carnetAdresse[this.indexPrenom[i]].getVille().equals(ville)) {
+                                this.afficherIndex(this.indexPrenom[i]);
+                            } else if (this.carnetAdresse[this.indexPrenom[i]].getNom().equals(nom) && this.carnetAdresse[this.indexPrenom[i]].getNumeroTel().equals(telephone)) {
+                                this.afficherIndex(this.indexPrenom[i]);
+                            } else if (this.carnetAdresse[this.indexPrenom[i]].getNumeroTel().equals(telephone)) {
+                                this.afficherIndex(this.indexPrenom[i]);
+                            } else if (this.carnetAdresse[this.indexPrenom[i]].getVille().equals(ville)) {
+                                this.afficherIndex(this.indexPrenom[i]);
+                            } else if (this.carnetAdresse[this.indexPrenom[i]].getNom().equals(nom)) {
+                                this.afficherIndex(this.indexPrenom[i]);
                             }
                         } else { // si il y a que le nom rechercher affiche les occurences
-                            this.afficherIndex(i);
+                            this.afficherIndex(this.indexPrenom[i]);
                         }
                         i = i + 1;
                     }
                 } else {
                     System.out.println("Aucune personne trouvé avec ces critères");
+                    trouve = false;
                 }
             }
             if (!ville.equals("") && !recherche) { // si le critère prénom est vide
@@ -224,28 +225,29 @@ public class Carnet implements Serializable {
                 recherche = true;
                 i = index;
                 if (i != -1) {
-                    while (i < this.nombrePersonne && this.carnetAdresse[i].getVille().equals(ville)) {//affiche toute les occurrences correspondant au ville + d'autres critères
+                    while (i < this.nombrePersonne && this.carnetAdresse[this.indexVille[i]].getVille().equals(ville)) {//affiche toute les occurrences correspondant au ville + d'autres critères
                         if (!nom.equals("") || !prenom.equals("") || !telephone.equals("")) {
-                            if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getPrenom().equals(prenom) && this.carnetAdresse[i].getNumeroTel().equals(telephone)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getPrenom().equals(prenom)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getNumeroTel().equals(telephone)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNumeroTel().equals(telephone)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getPrenom().equals(prenom)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNom().equals(nom)) {
-                                this.afficherIndex(i);
+                            if (this.carnetAdresse[this.indexVille[i]].getNom().equals(nom) && this.carnetAdresse[this.indexVille[i]].getPrenom().equals(prenom) && this.carnetAdresse[this.indexVille[i]].getNumeroTel().equals(telephone)) {
+                                this.afficherIndex(this.indexVille[i]);
+                            } else if (this.carnetAdresse[this.indexVille[i]].getNom().equals(nom) && this.carnetAdresse[this.indexVille[i]].getPrenom().equals(prenom)) {
+                                this.afficherIndex(this.indexVille[i]);
+                            } else if (this.carnetAdresse[this.indexVille[i]].getNom().equals(nom) && this.carnetAdresse[this.indexVille[i]].getNumeroTel().equals(telephone)) {
+                                this.afficherIndex(this.indexVille[i]);
+                            } else if (this.carnetAdresse[this.indexVille[i]].getNumeroTel().equals(telephone)) {
+                                this.afficherIndex(this.indexVille[i]);
+                            } else if (this.carnetAdresse[this.indexVille[i]].getPrenom().equals(prenom)) {
+                                this.afficherIndex(this.indexVille[i]);
+                            } else if (this.carnetAdresse[this.indexVille[i]].getNom().equals(nom)) {
+                                this.afficherIndex(this.indexVille[i]);
                             }
                         } else { // si il y a que le nom rechercher affiche les occurences
-                            this.afficherIndex(i);
+                            this.afficherIndex(this.indexVille[i]);
                         }
                         i = i + 1;
                     }
                 } else {
                     System.out.println("Aucune personne trouvé avec ces critères");
+                    trouve = false;
                 }
             }
             if (!telephone.equals("") && !recherche) { //si le critère ville est vide
@@ -253,32 +255,34 @@ public class Carnet implements Serializable {
                 recherche = true;
                 i = index;
                 if (i != -1) {
-                    while (i < this.nombrePersonne && this.carnetAdresse[i].getNumeroTel().equals(telephone)) { //affiche toute les occurrences correspondant au téléphone + d'autres critères
+                    while (i < this.nombrePersonne && this.carnetAdresse[this.indexTelephone[i]].getNumeroTel().equals(telephone)) { //affiche toute les occurrences correspondant au téléphone + d'autres critères
                         if (!nom.equals("") || !ville.equals("") || !prenom.equals("")) {
-                            if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getVille().equals(ville) && this.carnetAdresse[i].getPrenom().equals(prenom)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getVille().equals(ville)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNom().equals(nom) && this.carnetAdresse[i].getPrenom().equals(prenom)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getPrenom().equals(prenom)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getVille().equals(ville)) {
-                                this.afficherIndex(i);
-                            } else if (this.carnetAdresse[i].getNom().equals(nom)) {
-                                this.afficherIndex(i);
+                            if (this.carnetAdresse[this.indexTelephone[i]].getNom().equals(nom) && this.carnetAdresse[this.indexTelephone[i]].getVille().equals(ville) && this.carnetAdresse[this.indexTelephone[i]].getPrenom().equals(prenom)) {
+                                this.afficherIndex(this.indexTelephone[i]);
+                            } else if (this.carnetAdresse[this.indexTelephone[i]].getNom().equals(nom) && this.carnetAdresse[this.indexTelephone[i]].getVille().equals(ville)) {
+                                this.afficherIndex(this.indexTelephone[i]);
+                            } else if (this.carnetAdresse[this.indexTelephone[i]].getNom().equals(nom) && this.carnetAdresse[this.indexTelephone[i]].getPrenom().equals(prenom)) {
+                                this.afficherIndex(this.indexTelephone[i]);
+                            } else if (this.carnetAdresse[this.indexTelephone[i]].getPrenom().equals(prenom)) {
+                                this.afficherIndex(this.indexTelephone[i]);
+                            } else if (this.carnetAdresse[this.indexTelephone[i]].getVille().equals(ville)) {
+                                this.afficherIndex(this.indexTelephone[i]);
+                            } else if (this.carnetAdresse[this.indexTelephone[i]].getNom().equals(nom)) {
+                                this.afficherIndex(this.indexTelephone[i]);
                             }
                         } else { // si il y a que le nom rechercher affiche les occurences
-                            this.afficherIndex(i);
+                            this.afficherIndex(this.indexTelephone[i]);
                         }
                         i = i + 1;
                     }
                 } else {
                     System.out.println("Aucune personne trouvé avec ces critères");
+                    trouve = false;
                 }
             }
 
             int saisieInt;
+        if (trouve) {
             try {
                 do { // suppression
                     System.out.println("Supprimer la personne en rentrant son index sinon -1 pour quitter");
@@ -300,6 +304,7 @@ public class Carnet implements Serializable {
             } catch (Exception e) {
                 System.out.println("Erreur de saisie");
             }
+        }
         } else {
             System.out.println("Erreur le tableau est vide");
         }
@@ -381,7 +386,7 @@ public class Carnet implements Serializable {
         int p = this.nombrePersonne - 1;
         Personne x;
         boolean tri = true;
-        while (tri & p > 0) {
+        while (tri && p > 0) {
             tri = false;
             for (int i = 0; i < p; i++) {
                 if (this.carnetAdresse[i].comparaisonPersonne(this.carnetAdresse[i + 1])) {
@@ -404,7 +409,7 @@ public class Carnet implements Serializable {
         for (int i = 0; i < this.nombrePersonne; i++) {
             indexPrenom[i] = i;
         }
-        while (tri & p > 0) {
+        while (tri && p > 0) {
             tri = false;
             for (int i = 0; i < p; i++) {
                 if (this.carnetAdresse[this.indexPrenom[i]].getPrenom().compareTo(this.carnetAdresse[this.indexPrenom[i + 1]].getPrenom()) > 0) {
@@ -427,7 +432,7 @@ public class Carnet implements Serializable {
         for (int i = 0; i < this.nombrePersonne; i++) {
             indexVille[i] = i;
         }
-        while (tri & p > 0) {
+        while (tri && p > 0) {
             tri = false;
             for (int i = 0; i < p; i++) {
                 if (this.carnetAdresse[this.indexVille[i]].getVille().compareTo(this.carnetAdresse[this.indexVille[i + 1]].getVille()) > 0) {
@@ -450,7 +455,7 @@ public class Carnet implements Serializable {
         for (int i = 0; i < this.nombrePersonne; i++) {
             indexTelephone[i] = i;
         }
-        while (tri & p > 0) {
+        while (tri && p > 0) {
             tri = false;
             for (int i = 0; i < p; i++) {
                 if (this.carnetAdresse[this.indexTelephone[i]].getNumeroTel().compareTo(this.carnetAdresse[this.indexTelephone[i + 1]].getNumeroTel()) > 0) {
@@ -480,7 +485,7 @@ public class Carnet implements Serializable {
         if (this.carnetAdresse[m].getNom().equals(critereRechercher)) { //si une valeur est trouvé
             int aGauche = m - 1;
             if (aGauche >= 0 && this.carnetAdresse[aGauche].getNom().equals(critereRechercher)) {
-                while (aGauche > 0 && this.carnetAdresse[aGauche].getNom().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
+                while (aGauche > 0 && this.carnetAdresse[aGauche-1].getNom().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
                     aGauche = aGauche - 1;
                 }
                 indice = aGauche;
@@ -509,7 +514,7 @@ public class Carnet implements Serializable {
         if (this.carnetAdresse[this.indexPrenom[m]].getPrenom().equals(critereRechercher)) {
             int aGauche = m - 1;
             if (aGauche >= 0 && this.carnetAdresse[this.indexPrenom[aGauche]].getPrenom().equals(critereRechercher)) {
-                while (aGauche > 0 && this.carnetAdresse[this.indexPrenom[aGauche]].getPrenom().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
+                while (aGauche > 0 && this.carnetAdresse[this.indexPrenom[aGauche-1]].getPrenom().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
                     aGauche = aGauche - 1;
                 }
                 indice = aGauche;
@@ -521,7 +526,6 @@ public class Carnet implements Serializable {
         }
         return indice;
     }
-
     private int rechercheDichotomiqueVille(String critereRechercher) {
         int indice;
         int a = 0;
@@ -538,7 +542,7 @@ public class Carnet implements Serializable {
         if (this.carnetAdresse[this.indexVille[m]].getVille().equals(critereRechercher)) {
             int aGauche = m - 1;
             if (aGauche >= 0 && this.carnetAdresse[this.indexVille[aGauche]].getVille().equals(critereRechercher)) {
-                while (aGauche > 0 && this.carnetAdresse[this.indexVille[aGauche]].getVille().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
+                while (aGauche > 0 && this.carnetAdresse[this.indexVille[aGauche-1]].getVille().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
                     aGauche = aGauche - 1;
                 }
                 indice = aGauche;
@@ -567,7 +571,7 @@ public class Carnet implements Serializable {
         if (this.carnetAdresse[this.indexTelephone[m]].getNumeroTel().equals(critereRechercher)) {
             int aGauche = m - 1;
             if (aGauche >= 0 && this.carnetAdresse[this.indexTelephone[aGauche]].getNumeroTel().equals(critereRechercher)) {
-                while (aGauche > 0 && this.carnetAdresse[this.indexTelephone[aGauche]].getNumeroTel().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
+                while (aGauche > 0 && this.carnetAdresse[this.indexTelephone[aGauche-1]].getNumeroTel().equals(critereRechercher)) { //on cherche la valeur la plus a gauche possible
                     aGauche = aGauche - 1;
                 }
                 indice = aGauche;
